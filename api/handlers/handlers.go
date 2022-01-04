@@ -101,7 +101,7 @@ func Consume_OrderDetails() {
 
 	go func() {
 		for {
-			time.Sleep(15 * time.Minute)
+			time.Sleep(20 * time.Minute)
 			for d := range msgs {
 				var order_tdetails []models.Pg_Element
 				buf := bytes.NewBuffer(d.Body)

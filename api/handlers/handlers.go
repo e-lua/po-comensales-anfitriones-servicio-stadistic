@@ -60,7 +60,7 @@ func Consume_OrderMade() {
 		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
-	msgs, err_consume := ch.Consume("anfitrion/bannermo", "", true, false, false, false, nil)
+	msgs, err_consume := ch.Consume("comensal/ordermade", "", true, false, false, false, nil)
 	if err_consume != nil {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}
@@ -92,7 +92,7 @@ func Consume_OrderDetails() {
 		log.Fatal("Error connection canal " + error_conection.Error())
 	}
 
-	msgs, err_consume := ch.Consume("anfitrion/bannermo", "", true, false, false, false, nil)
+	msgs, err_consume := ch.Consume("comensal/orderdetails", "", true, false, false, false, nil)
 	if err_consume != nil {
 		log.Fatal("Error connection cola " + err_consume.Error())
 	}

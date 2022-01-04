@@ -1,0 +1,67 @@
+version: "3.3"
+
+services: 
+  app:
+    container_name: restoneranfitrion_app_servicio_inventario
+    restart: always 
+    build: .
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`localhost`)"
+    networks:
+      - backend
+    ports:
+      - "6630:4320"
+    links:
+      - postgres
+  postgres:
+    container_name: postgres_db
+    restart: always
+    image: "postgres:13"
+    networks:
+      - backend
+    ports:
+      - "8620:5432"
+    environment:
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=postgreshxh5
+      - POSTGRES_PASSWORD=postgresxh5
+      - POSTGRES_DB=postgresxh5
+  pgadmin:
+    restart: always
+    image: "dpage/pgadmin4"
+    networks:
+      - backend
+    ports:
+      - "120:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: adminag6@adminag6.com
+      PGADMIN_DEFAULT_PASSWORD: adminah6
+    depends_on:
+      - postgres
+  traefik: # apache.app.test - nginx.app.test
+    image: traefik:v2.3.6
+    labels: 
+      - "traefik.http.routers.api.rule=Host(`localhost`)"
+    ports: 
+      - 102:80
+      - 6632:8080
+      - 443:443
+    volumes: 
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/traefik.yml
+      - ./acme.json:/acme.json
+
+networks:
+  backend:
+    driver: bridge
+    ipam: 
+      driver: default 
+
+
+
+
+
+
+
+

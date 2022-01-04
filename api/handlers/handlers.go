@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -67,15 +68,18 @@ func Consume_OrderMade() {
 	noStop := make(chan bool)
 
 	go func() {
-		for d := range msgs {
-			var order_tocopy []models.Pg_Order_ToCopy
-			buf := bytes.NewBuffer(d.Body)
-			decoder := json.NewDecoder(buf)
-			err_consume := decoder.Decode(&order_tocopy)
-			if err_consume != nil {
-				log.Fatal("Error decoding")
+		for {
+			time.Sleep(15 * time.Minute)
+			for d := range msgs {
+				var order_tocopy []models.Pg_Order_ToCopy
+				buf := bytes.NewBuffer(d.Body)
+				decoder := json.NewDecoder(buf)
+				err_consume := decoder.Decode(&order_tocopy)
+				if err_consume != nil {
+					log.Fatal("Error decoding")
+				}
+				stadistic.StadisticRouter_pg.Import_OrderMade(order_tocopy)
 			}
-			stadistic.StadisticRouter_pg.Import_OrderMade(order_tocopy)
 		}
 	}()
 
@@ -96,15 +100,18 @@ func Consume_OrderDetails() {
 	noStop2 := make(chan bool)
 
 	go func() {
-		for d := range msgs {
-			var order_tdetails []models.Pg_Element
-			buf := bytes.NewBuffer(d.Body)
-			decoder := json.NewDecoder(buf)
-			err_consume := decoder.Decode(&order_tdetails)
-			if err_consume != nil {
-				log.Fatal("Error decoding")
+		for {
+			time.Sleep(15 * time.Minute)
+			for d := range msgs {
+				var order_tdetails []models.Pg_Element
+				buf := bytes.NewBuffer(d.Body)
+				decoder := json.NewDecoder(buf)
+				err_consume := decoder.Decode(&order_tdetails)
+				if err_consume != nil {
+					log.Fatal("Error decoding")
+				}
+				stadistic.StadisticRouter_pg.Import_OrderDetails(order_tdetails)
 			}
-			stadistic.StadisticRouter_pg.Import_OrderDetails(order_tdetails)
 		}
 	}()
 

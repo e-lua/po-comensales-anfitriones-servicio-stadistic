@@ -85,6 +85,7 @@ type Pg_Element struct {
 	IDBusiness  int     `json:"idbusiness"`
 	IDOrder     int64   `json:"idorder"`
 	NameE       string  `json:"name"`
+	Category    string  `json:"category"`
 	IDCarta     int     `json:"idcarta"`
 	URLPhoto    string  `json:"url"`
 	Description string  `json:"description"`

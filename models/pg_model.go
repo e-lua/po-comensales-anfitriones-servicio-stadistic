@@ -127,8 +127,8 @@ type Pg_Order_ToCopy struct {
 }
 
 type Pg_Stadistic_Comensal struct {
-	Outgoing        float32 `json:"outgoing"`
-	Orders          int     `json:"orders"`
-	Outgoing_Week   int     `json:"outgoingbyweek"`
-	Orders_TypeFood int     `json:"ordersbytypefood"`
+	Outgoing        float32     `json:"outgoing"`
+	Orders          int         `json:"orders"`
+	Outgoing_Week   interface{} `json:"outgoingbyweek"`
+	Orders_TypeFood interface{} `json:"ordersbytypefood"`
 }

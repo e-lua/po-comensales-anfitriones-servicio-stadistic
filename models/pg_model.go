@@ -86,6 +86,7 @@ type Pg_Element struct {
 	IDOrder     int64   `json:"idorder"`
 	NameE       string  `json:"name"`
 	Category    string  `json:"category"`
+	Typefood    string  `json:"typefood"`
 	IDCarta     int     `json:"idcarta"`
 	URLPhoto    string  `json:"url"`
 	Description string  `json:"description"`
@@ -130,5 +131,5 @@ type Pg_Stadistic_Comensal struct {
 	Outgoing        float32     `json:"outgoing"`
 	Orders          int         `json:"orders"`
 	Outgoing_Week   interface{} `json:"outgoingbyweek"`
-	Orders_TypeFood interface{} `json:"ordersbytypefood"`
+	Orders_typefood interface{} `json:"ordersbytypefood"`
 }

@@ -125,3 +125,10 @@ type Pg_Order_ToCopy struct {
 	Payment              Pg_Payment              `json:"payment"`
 	DataRejected         Pg_Data_Rejected        `json:"datarejected"`
 }
+
+type Pg_Stadistic_Comensal struct {
+	Outgoing        float32 `json:"outgoing"`
+	Orders          int     `json:"orders"`
+	Outgoing_Week   int     `json:"outgoingbyweek"`
+	Orders_TypeFood int     `json:"ordersbytypefood"`
+}

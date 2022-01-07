@@ -28,11 +28,12 @@ func Manejadores() {
 
 	e.GET("/", index)
 	//VERSION
-	//version_1 := e.Group("/v1")
+	version_1 := e.Group("/v1")
 
 	/*===========CARTA===========*/
 	//V1 FROM V1 TO ...TO ENTITY MENU
-	//router_business := version_1.Group("/order")
+	router_stadistic := version_1.Group("/stadistic")
+	router_stadistic.GET("/comensal", stadistic.StadisticRouter_pg.Get_ComensalStadistic_All)
 
 	/*===========CARTA===========*/
 
@@ -101,7 +102,7 @@ func Consume_OrderDetails() {
 
 	go func() {
 		for {
-			time.Sleep(20 * time.Minute)
+			time.Sleep(17 * time.Minute)
 			for d := range msgs {
 				var order_tdetails []models.Pg_Element
 				buf := bytes.NewBuffer(d.Body)

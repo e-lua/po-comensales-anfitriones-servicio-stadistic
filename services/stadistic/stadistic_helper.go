@@ -33,3 +33,9 @@ type Response_OrderDetails struct {
 	DataError string              `json:"dataError"`
 	Data      []models.Pg_Element `json:"data"`
 }
+
+type Response_StadisticComensal struct {
+	Error     bool                         `json:"error"`
+	DataError string                       `json:"dataError"`
+	Data      models.Pg_Stadistic_Comensal `json:"data"`
+}

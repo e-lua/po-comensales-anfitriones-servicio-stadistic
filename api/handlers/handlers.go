@@ -34,8 +34,8 @@ func Manejadores() {
 	//V1 FROM V1 TO ...TO ENTITY MENU
 	router_stadistic := version_1.Group("/stadistic")
 	router_stadistic.GET("/comensal", stadistic.StadisticRouter_pg.Get_ComensalStadistic_All)
-
-	/*===========CARTA===========*/
+	router_stadistic.GET("/anfitrion/order", stadistic.StadisticRouter_pg.Get_ComensalStadistic_All)
+	router_stadistic.GET("/anfitrion/incoming", stadistic.StadisticRouter_pg.Get_ComensalStadistic_All)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")

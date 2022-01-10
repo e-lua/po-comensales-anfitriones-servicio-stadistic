@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	"github.com/labstack/echo/v4"
@@ -27,6 +28,17 @@ func GetJWT(jwt string) (int, bool, string, int) {
 	return 200, false, "", get_respuesta.Data.IDComensal
 }
 
+func GetJWT_Anfitrion(jwt string, service int, module int, epic int, endpoint int) (int, bool, string, int) {
+	//Obtenemos los datos del auth
+	respuesta_b, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/trylogin?jwt=" + jwt + "&service=" + strconv.Itoa(service) + "&module=" + strconv.Itoa(module) + "&epic=" + strconv.Itoa(epic) + "&endpoint=" + strconv.Itoa(endpoint))
+	var get_respuesta_b ResponseJWT_B
+	error_decode_respuesta_b := json.NewDecoder(respuesta_b.Body).Decode(&get_respuesta_b)
+	if error_decode_respuesta_b != nil {
+		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta_b.Error(), 0
+	}
+	return 200, false, "", get_respuesta_b.Data.IdBusiness
+}
+
 /*----------------------IMPORTING DATA ORDERS----------------------*/
 
 func (sr *stadisticRouter_pg) Import_OrderMade(order_tocopy []models.Pg_Order_ToCopy) {
@@ -47,7 +59,7 @@ func (sr *stadisticRouter_pg) Import_OrderDetails(order_details []models.Pg_Elem
 	}
 }
 
-/*----------------------GET STADISTICS----------------------*/
+/*----------------------GET STADISTICS - COMENSAL----------------------*/
 
 func (sr *stadisticRouter_pg) Get_ComensalStadistic_All(c echo.Context) error {
 
@@ -69,5 +81,53 @@ func (sr *stadisticRouter_pg) Get_ComensalStadistic_All(c echo.Context) error {
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := Get_ComensalStadistic_All_Service(start_date, end_date, data_idcomensal)
 	results := Response_StadisticComensal{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
+/*----------------------GET STADISTICS - ANFITRION----------------------*/
+
+func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Orders(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos la fecha inicial y final
+	start_date := c.Request().URL.Query().Get("start_date")
+	end_date := c.Request().URL.Query().Get("end_date")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := Get_AnfitrionStadistic_Orders_Service(start_date, end_date, data_idbusiness)
+	results := Response_StadisticAnfitrion_Order{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
+func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Incoming(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
+	//Recibimos la fecha inicial y final
+	start_date := c.Request().URL.Query().Get("start_date")
+	end_date := c.Request().URL.Query().Get("end_date")
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := Get_AnfitrionStadistic_Incoming_Service(start_date, end_date, data_idbusiness)
+	results := Response_StadisticAnfitrion_Incoming{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }

@@ -133,3 +133,21 @@ type Pg_Stadistic_Comensal struct {
 	Outgoing_Week   interface{} `json:"outgoingbyweek"`
 	Orders_typefood interface{} `json:"ordersbytypefood"`
 }
+
+type Pg_Stadistic_Anfitrion_Orders struct {
+	Orders            int         `json:"total"`
+	Orders_by_week    interface{} `json:"ordersbyweek"`
+	Orders_by_day     interface{} `json:"ordersbyday"`
+	Orders_by_service interface{} `json:"ordersbyservice"`
+	Orders_by_payment interface{} `json:"ordersbypayment"`
+	Elements          interface{} `json:"elements"`
+}
+
+type Pg_Stadistic_Anfitrion_Incoming struct {
+	Incoming            interface{} `json:"total"`
+	Incoming_by_week    interface{} `json:"incomingbyweek"`
+	Incoming_by_day     interface{} `json:"incomingbyday"`
+	Incoming_by_service interface{} `json:"incomingbyservice"`
+	Incoming_by_payment interface{} `json:"incomingbypayment"`
+	Elements            interface{} `json:"elements"`
+}

@@ -8,6 +8,7 @@ import (
 
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	order_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/order"
+	stadistic_anfitrion_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/stadistic-anfitrion"
 	stadistic_comensal_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/stadistic-comensal"
 )
 
@@ -40,4 +41,26 @@ func Get_ComensalStadistic_All_Service(date_init string, date_end string, idcome
 	}
 
 	return 200, false, "", orders_comensal
+}
+
+func Get_AnfitrionStadistic_Orders_Service(date_init string, date_end string, idbusiness int) (int, bool, string, models.Pg_Stadistic_Anfitrion_Orders) {
+
+	//Enviamos los datos a la BD
+	orders, error_add_order := stadistic_anfitrion_repository.Pg_Find_Stadistic_Orders(date_init, date_end, idbusiness)
+	if error_add_order != nil {
+		return 500, true, "Error interno en el servidor al buscar las ordenes, detalle: " + error_add_order.Error(), orders
+	}
+
+	return 200, false, "", orders
+}
+
+func Get_AnfitrionStadistic_Incoming_Service(date_init string, date_end string, idbusiness int) (int, bool, string, models.Pg_Stadistic_Anfitrion_Incoming) {
+
+	//Enviamos los datos a la BD
+	incoming, error_add_order := stadistic_anfitrion_repository.Pg_Find_Stadistic_Incoming(date_init, date_end, idbusiness)
+	if error_add_order != nil {
+		return 500, true, "Error interno en el servidor al buscar las ordenes, detalle: " + error_add_order.Error(), incoming
+	}
+
+	return 200, false, "", incoming
 }

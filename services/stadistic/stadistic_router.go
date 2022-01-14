@@ -28,15 +28,15 @@ func GetJWT(jwt string) (int, bool, string, int) {
 	return 200, false, "", get_respuesta.Data.IDComensal
 }
 
-func GetJWT_Anfitrion(jwt string, service int, module int, epic int, endpoint int) (int, bool, string, int) {
+func GetJWT_Anfitrion(jwt string, service int, module int, epic int, endpoint int) (int, bool, string, int, int) {
 	//Obtenemos los datos del auth
 	respuesta_b, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/trylogin?jwt=" + jwt + "&service=" + strconv.Itoa(service) + "&module=" + strconv.Itoa(module) + "&epic=" + strconv.Itoa(epic) + "&endpoint=" + strconv.Itoa(endpoint))
 	var get_respuesta_b ResponseJWT_B
 	error_decode_respuesta_b := json.NewDecoder(respuesta_b.Body).Decode(&get_respuesta_b)
 	if error_decode_respuesta_b != nil {
-		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta_b.Error(), 0
+		return 500, true, "Error en el sevidor interno al intentar decodificar la autenticacion, detalles: " + error_decode_respuesta_b.Error(), 0, 0
 	}
-	return 200, false, "", get_respuesta_b.Data.IdBusiness
+	return 200, false, "", get_respuesta_b.Data.IdBusiness, get_respuesta_b.Data.IdRol
 }
 
 /*----------------------IMPORTING DATA ORDERS----------------------*/
@@ -89,7 +89,7 @@ func (sr *stadisticRouter_pg) Get_ComensalStadistic_All(c echo.Context) error {
 func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Orders(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	status, boolerror, dataerror, data_idbusiness, rol := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
@@ -97,6 +97,10 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Orders(c echo.Context) erro
 	if data_idbusiness <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
+	}
+	if rol != 1 {
+		results := Response{Error: true, DataError: "Este rol no esta permitido para visualizar las estadísticas", Data: ""}
+		return c.JSON(403, results)
 	}
 
 	//Recibimos la fecha inicial y final
@@ -112,7 +116,7 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Orders(c echo.Context) erro
 func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Incoming(c echo.Context) error {
 
 	//Obtenemos los datos del auth
-	status, boolerror, dataerror, data_idbusiness := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	status, boolerror, dataerror, data_idbusiness, rol := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
 		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
 		return c.JSON(status, results)
@@ -120,6 +124,10 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Incoming(c echo.Context) er
 	if data_idbusiness <= 0 {
 		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
+	}
+	if rol != 1 {
+		results := Response{Error: true, DataError: "Este rol no esta permitido para visualizar las estadísticas", Data: ""}
+		return c.JSON(403, results)
 	}
 
 	//Recibimos la fecha inicial y final

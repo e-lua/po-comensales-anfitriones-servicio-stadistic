@@ -35,8 +35,8 @@ services:
     ports:
       - "120:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: adminag6@adminag6.com
-      PGADMIN_DEFAULT_PASSWORD: adminah6
+      PGADMIN_DEFAULT_EMAIL: adminag6@6GERT5gUty.com
+      PGADMIN_DEFAULT_PASSWORD: f436GERT5g35HUty43f46
     depends_on:
       - postgres
   traefik: # apache.app.test - nginx.app.test

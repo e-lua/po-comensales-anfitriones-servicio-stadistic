@@ -66,11 +66,11 @@ func (sr *stadisticRouter_pg) Get_ComensalStadistic_All(c echo.Context) error {
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idcomensal := GetJWT(c.Request().Header.Get("Authorization"))
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idcomensal <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 
@@ -91,11 +91,11 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Orders(c echo.Context) erro
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness, rol := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 	if rol != 1 {
@@ -118,11 +118,11 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Incoming(c echo.Context) er
 	//Obtenemos los datos del auth
 	status, boolerror, dataerror, data_idbusiness, rol := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
 	if dataerror != "" {
-		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
 		return c.JSON(status, results)
 	}
 	if data_idbusiness <= 0 {
-		results := Response{Error: true, DataError: "Token incorrecto", Data: ""}
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
 		return c.JSON(400, results)
 	}
 	if rol != 1 {

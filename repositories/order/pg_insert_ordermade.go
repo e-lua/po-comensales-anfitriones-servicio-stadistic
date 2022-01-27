@@ -9,6 +9,11 @@ import (
 
 func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 
+	//Tiempo limite al contexto
+	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
+	//defer cancelara el contexto
+	defer cancel()
+
 	//Instanciando los valores
 	idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg := []int64{}, []time.Time{}, []int{}, []int{}, []string{}, []string{}, []string{}, []models.Pg_Schedule{}, []models.Pg_Information_Business{}, []models.Pg_Address_Business{}, []models.Pg_Information_Comensal{}, []models.Pg_Address_Comensal{}, []string{}, []models.Pg_Service{}, []models.Pg_Payment{}, []models.Pg_Data_Rejected{}
 
@@ -35,7 +40,7 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 	db := models.Conectar_Pg_DB()
 
 	query := `INSERT INTO ordermade(idOrder,dateRegistered,fourCode,idStatus,datelisto,datefinish,dateporfinalizar,schedule,informationBusiness,addressBusiness,informationComensal,addressComensal,note,service,payment,datarejected) (select * from unnest($1::bigint[], $2::timestamp[],$3::int[],$4::int[],$5::varchar(35)[],$6::varchar(35)[],$7::varchar(35)[],$8::jsonb[],$9::jsonb[],$10::jsonb[],$11::jsonb[],$12::jsonb[],$13::varchar(200)[],$14::jsonb[],$15::jsonb[],$16::jsonb[]))`
-	if _, err := db.Exec(context.Background(), query, idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg); err != nil {
+	if _, err := db.Exec(ctx, query, idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg); err != nil {
 		return err
 	}
 

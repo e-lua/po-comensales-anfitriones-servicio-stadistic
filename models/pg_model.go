@@ -128,26 +128,29 @@ type Pg_Order_ToCopy struct {
 }
 
 type Pg_Stadistic_Comensal struct {
-	Outgoing        float32     `json:"outgoing"`
-	Orders          int         `json:"orders"`
-	Outgoing_Week   interface{} `json:"outgoingbyweek"`
-	Orders_typefood interface{} `json:"ordersbytypefood"`
+	Orders_lastdateorder string      `json:"lastdateorder"`
+	Outgoing             float32     `json:"outgoing"`
+	Orders               int         `json:"orders"`
+	Outgoing_Week        interface{} `json:"outgoingbyweek"`
+	Orders_typefood      interface{} `json:"ordersbytypefood"`
 }
 
 type Pg_Stadistic_Anfitrion_Orders struct {
-	Orders            int         `json:"total"`
-	Orders_by_week    interface{} `json:"ordersbyweek"`
-	Orders_by_day     interface{} `json:"ordersbyday"`
-	Orders_by_service interface{} `json:"ordersbyservice"`
-	Orders_by_payment interface{} `json:"ordersbypayment"`
-	Elements          interface{} `json:"elements"`
+	Orders_lastdateorder string      `json:"lastdateorder"`
+	Orders               int         `json:"total"`
+	Orders_by_week       interface{} `json:"ordersbyweek"`
+	Orders_by_day        interface{} `json:"ordersbyday"`
+	Orders_by_service    interface{} `json:"ordersbyservice"`
+	Orders_by_payment    interface{} `json:"ordersbypayment"`
+	Elements             interface{} `json:"elements"`
 }
 
 type Pg_Stadistic_Anfitrion_Incoming struct {
-	Incoming            interface{} `json:"total"`
-	Incoming_by_week    interface{} `json:"incomingbyweek"`
-	Incoming_by_day     interface{} `json:"incomingbyday"`
-	Incoming_by_service interface{} `json:"incomingbyservice"`
-	Incoming_by_payment interface{} `json:"incomingbypayment"`
-	Elements            interface{} `json:"elements"`
+	Incoming_lastdateorder string      `json:"lastdateorder"`
+	Incoming               interface{} `json:"total"`
+	Incoming_by_week       interface{} `json:"incomingbyweek"`
+	Incoming_by_day        interface{} `json:"incomingbyday"`
+	Incoming_by_service    interface{} `json:"incomingbyservice"`
+	Incoming_by_payment    interface{} `json:"incomingbypayment"`
+	Elements               interface{} `json:"elements"`
 }

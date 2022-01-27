@@ -70,7 +70,7 @@ func Consume_OrderMade() {
 
 	go func() {
 		for {
-			time.Sleep(15 * time.Minute)
+			time.Sleep(10 * time.Minute)
 			for d := range msgs {
 				var order_tocopy []models.Pg_Order_ToCopy
 				buf := bytes.NewBuffer(d.Body)
@@ -102,7 +102,7 @@ func Consume_OrderDetails() {
 
 	go func() {
 		for {
-			time.Sleep(17 * time.Minute)
+			time.Sleep(12 * time.Minute)
 			for d := range msgs {
 				var order_tdetails []models.Pg_Element
 				buf := bytes.NewBuffer(d.Body)

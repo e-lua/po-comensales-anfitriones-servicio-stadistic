@@ -128,7 +128,7 @@ type Pg_Order_ToCopy struct {
 }
 
 type Pg_Stadistic_Comensal struct {
-	Orders_lastdateorder string      `json:"lastdateorder"`
+	Orders_lastdateorder interface{} `json:"lastdateorder"`
 	Outgoing             float32     `json:"outgoing"`
 	Orders               int         `json:"orders"`
 	Outgoing_Week        interface{} `json:"outgoingbyweek"`
@@ -136,7 +136,7 @@ type Pg_Stadistic_Comensal struct {
 }
 
 type Pg_Stadistic_Anfitrion_Orders struct {
-	Orders_lastdateorder string      `json:"lastdateorder"`
+	Orders_lastdateorder interface{} `json:"lastdateorder"`
 	Orders               int         `json:"total"`
 	Orders_by_week       interface{} `json:"ordersbyweek"`
 	Orders_by_day        interface{} `json:"ordersbyday"`

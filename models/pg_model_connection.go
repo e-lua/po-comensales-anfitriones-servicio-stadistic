@@ -22,7 +22,7 @@ func Conectar_Pg_DB() *pgxpool.Pool {
 	defer cancel()
 
 	once_pg.Do(func() {
-		urlString := "postgres://postgreshxh5:postgresxh5@postgres:5432/postgresxh5?pool_max_conns=45"
+		urlString := "postgres://postgreshxh5:dfsdf4FERg45234SERFsdrf346erbeg@postgres:5432/postgresxh5?pool_max_conns=45"
 		config, _ := pgxpool.ParseConfig(urlString)
 		p_pg, _ = pgxpool.ConnectConfig(ctx, config)
 	})

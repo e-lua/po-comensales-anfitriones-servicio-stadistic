@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
@@ -15,12 +16,12 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 	defer cancel()
 
 	//Instanciando los valores
-	idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg := []int64{}, []time.Time{}, []int{}, []int{}, []string{}, []string{}, []string{}, []models.Pg_Schedule{}, []models.Pg_Information_Business{}, []models.Pg_Address_Business{}, []models.Pg_Information_Comensal{}, []models.Pg_Address_Comensal{}, []string{}, []models.Pg_Service{}, []models.Pg_Payment{}, []models.Pg_Data_Rejected{}
+	idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg := []int64{}, []time.Time{}, []string{}, []int{}, []string{}, []string{}, []string{}, []models.Pg_Schedule{}, []models.Pg_Information_Business{}, []models.Pg_Address_Business{}, []models.Pg_Information_Comensal{}, []models.Pg_Address_Comensal{}, []string{}, []models.Pg_Service{}, []models.Pg_Payment{}, []models.Pg_Data_Rejected{}
 
 	for _, om := range ordermades {
 		idorders_pg = append(idorders_pg, om.IDOrder)
 		data_registered_pg = append(data_registered_pg, om.DateRegistered)
-		fourcode_pg = append(fourcode_pg, om.FourCode)
+		fourcode_pg = append(fourcode_pg, strconv.Itoa(om.FourCode))
 		idstatus_pg = append(idstatus_pg, om.IdStatus)
 		datelisto_pg = append(datelisto_pg, om.DateListo)
 		datefinish_pg = append(datefinish_pg, om.DateFinish)

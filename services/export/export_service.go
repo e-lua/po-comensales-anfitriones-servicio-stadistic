@@ -4,6 +4,8 @@ import (
 
 	//REPOSITORIES
 
+	"log"
+
 	export_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/export"
 )
 
@@ -20,6 +22,8 @@ func Export_Stadistic_Service() (int, bool, string, string) {
 			return 500, true, "Error en al intentar actualizar los datos, detalles:" + error_update.Error(), ""
 		}
 	}
+
+	log.Println(idorders)
 
 	return 200, false, "", "Exportacion correcta"
 }

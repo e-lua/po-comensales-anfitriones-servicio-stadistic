@@ -139,3 +139,30 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Incoming(c echo.Context) er
 	results := Response_StadisticAnfitrion_Incoming{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
+
+func (sr *stadisticRouter_pg) Get_ElementStadistic_ByDay(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness, rol := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+	if rol != 1 {
+		results := Response{Error: true, DataError: "Este rol no esta permitido para visualizar las estadísticas", Data: ""}
+		return c.JSON(403, results)
+	}
+
+	//Recibimos el limit
+	idelement := c.Param("idelement")
+	idelement_int, _ := strconv.Atoi(idelement)
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := Get_ElementStadistic_ByDay_Service(idelement_int)
+	results := Response_StadisticElements_ByDay{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}

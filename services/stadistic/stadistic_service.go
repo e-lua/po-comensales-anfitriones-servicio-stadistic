@@ -10,6 +10,7 @@ import (
 	order_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/order"
 	stadistic_anfitrion_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/stadistic-anfitrion"
 	stadistic_comensal_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/stadistic-comensal"
+	stadistic_element_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/stadistic_elements"
 )
 
 func Import_OrderMade_Service(order_mades []models.Pg_Order_ToCopy) error {
@@ -63,4 +64,15 @@ func Get_AnfitrionStadistic_Incoming_Service(date_init string, date_end string, 
 	}
 
 	return 200, false, "", incoming
+}
+
+func Get_ElementStadistic_ByDay_Service(input_idelement int) (int, bool, string, []interface{}) {
+
+	//Enviamos los datos a la BD
+	elements_perday, error_add_order := stadistic_element_repository.Pg_Stadistic_OrdersByElements(input_idelement)
+	if error_add_order != nil {
+		return 500, true, "Error interno en el servidor al buscar las estadisticas de elementos por dia, detalle: " + error_add_order.Error(), elements_perday
+	}
+
+	return 200, false, "", elements_perday
 }

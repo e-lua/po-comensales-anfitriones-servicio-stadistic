@@ -7,7 +7,7 @@ import (
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 )
 
-func Pg_Update_Exported(idorder_made []int) error {
+func Pg_Update_Exported(idorder_made []int64) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)

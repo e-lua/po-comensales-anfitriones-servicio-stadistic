@@ -11,7 +11,7 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func Pg_Export_OrdersByElements() ([]models.Pg_Export_ByElement, []int, int, error) {
+func Pg_Export_OrdersByElements() ([]models.Pg_Export_ByElement, []int64, int, error) {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -19,13 +19,13 @@ func Pg_Export_OrdersByElements() ([]models.Pg_Export_ByElement, []int, int, err
 	defer cancel()
 
 	//Variable a exportar
-	var ids []int
+	var ids []int64
 
 	//Creamos un contador para evitar tener que enviar datos vacios a traves de la cola
 	quantity := 0
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT od.idelement, COUNT(od.idelement),CONCAT(om.schedule->>'daterequired',' ',om.schedule->>'starttime')::timestamp FROM orderdetails AS od JOIN ordermade AS om ON od.idorder=om.idorder WHERE om.isexportedtoinventory=false GROUP BY od.idelement,CONCAT(om.schedule->>'daterequired',' ',om.schedule->>'starttime')::timestamp "
+	q := "SELECT od.idorder,od.idelement, COUNT(od.idelement),CONCAT(om.schedule->>'daterequired',' ',om.schedule->>'starttime')::timestamp FROM orderdetails AS od JOIN ordermade AS om ON od.idorder=om.idorder WHERE om.isexportedtoinventory=false GROUP BY od.idelement,CONCAT(om.schedule->>'daterequired',' ',om.schedule->>'starttime')::timestamp "
 	rows, error_shown := db.Query(ctx, q)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
@@ -38,12 +38,13 @@ func Pg_Export_OrdersByElements() ([]models.Pg_Export_ByElement, []int, int, err
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		oExportByElement := models.Pg_Export_ByElement{}
-		rows.Scan(&oExportByElement.IdElement, &oExportByElement.Quantity, &oExportByElement.Datetime)
+		var idorder int64
+		rows.Scan(&idorder, &oExportByElement.IdElement, &oExportByElement.Quantity, &oExportByElement.Datetime)
 		if oExportByElement.IdElement > 0 {
 			quantity = quantity + 1
 		}
 		oListExpByElement = append(oListExpByElement, oExportByElement)
-		ids = append(ids, oExportByElement.IdElement)
+		ids = append(ids, idorder)
 	}
 
 	if quantity >= 1 {

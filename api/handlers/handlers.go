@@ -123,7 +123,7 @@ func Consume_OrderDetails() {
 
 func Export_Stadistc() {
 	for {
-		time.Sleep(3 * time.Minute)
+		time.Sleep(2 * time.Minute)
 		export.ExportRouter_pg.Export_Stadistic()
 	}
 }

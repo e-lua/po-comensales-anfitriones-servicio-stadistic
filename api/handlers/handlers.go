@@ -38,7 +38,7 @@ func Manejadores() {
 	router_stadistic.GET("/comensal", stadistic.StadisticRouter_pg.Get_ComensalStadistic_All)
 	router_stadistic.GET("/anfitrion/order", stadistic.StadisticRouter_pg.Get_AnfitrionStadistic_Orders)
 	router_stadistic.GET("/anfitrion/incoming", stadistic.StadisticRouter_pg.Get_AnfitrionStadistic_Incoming)
-	router_stadistic.GET("/element/:idelement", stadistic.StadisticRouter_pg.Get_ElementStadistic_ByDay)
+	router_stadistic.GET("/anfitrion/element/:idelement", stadistic.StadisticRouter_pg.Get_ElementStadistic_ByDay)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")

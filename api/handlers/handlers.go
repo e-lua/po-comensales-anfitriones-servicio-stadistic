@@ -13,6 +13,7 @@ import (
 	"github.com/rs/cors"
 
 	"github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
+	export "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/export"
 	stadistic "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/stadistic"
 )
 
@@ -25,6 +26,7 @@ func Manejadores() {
 
 	go Consume_OrderMade()
 	go Consume_OrderDetails()
+	go Export_Stadistc()
 
 	e.GET("/", index)
 	//VERSION
@@ -117,4 +119,11 @@ func Consume_OrderDetails() {
 	}()
 
 	<-noStop2
+}
+
+func Export_Stadistc() {
+	for {
+		time.Sleep(15 * time.Minute)
+		export.ExportRouter_pg.Export_Stadistic()
+	}
 }

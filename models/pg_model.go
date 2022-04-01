@@ -154,3 +154,9 @@ type Pg_Stadistic_Anfitrion_Incoming struct {
 	Incoming_by_payment    interface{} `json:"incomingbypayment"`
 	Elements               interface{} `json:"elements"`
 }
+
+type Pg_Export_ByElement struct {
+	IdElement int    `json:"idelement"`
+	Quantity  int    `json:"quantity"`
+	Datetime  string `json:"datetime"`
+}

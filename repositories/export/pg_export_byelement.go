@@ -47,6 +47,8 @@ func Pg_Export_OrdersByElements() ([]models.Pg_Export_ByElement, []int64, int, e
 		ids = append(ids, idorder)
 	}
 
+	log.Print(ids)
+
 	if quantity >= 1 {
 		/*---------------------------MQTT---------------------------*/
 		//Comienza el proceso de MQTT

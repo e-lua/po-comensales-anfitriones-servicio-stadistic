@@ -13,6 +13,16 @@ import (
 	stadistic_element_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/stadistic_elements"
 )
 
+func Import_NewNameComensal_Service(input_name models.Mqtt_UpdateName) error {
+
+	error_add_ordermades := order_repository.Pg_Update_NameComensal(input_name)
+	if error_add_ordermades != nil {
+		log.Fatal(error_add_ordermades)
+	}
+
+	return nil
+}
+
 func Import_OrderMade_Service(order_mades []models.Pg_Order_ToCopy) error {
 
 	error_add_ordermades := order_repository.Pg_Insert_OrderMade(order_mades)
@@ -64,6 +74,17 @@ func Get_AnfitrionStadistic_Incoming_Service(date_init string, date_end string, 
 	}
 
 	return 200, false, "", incoming
+}
+
+func Get_AnfitrionStadistic_Comensales_Service(idbusiness int) (int, bool, string, models.Pg_ComensalesByAnfitrion) {
+
+	//Enviamos los datos a la BD
+	comensals, error_add_order := stadistic_anfitrion_repository.Pg_Find_ComensalesByAnfitrion(idbusiness)
+	if error_add_order != nil {
+		return 500, true, "Error interno en el servidor al buscar los comensales, detalle: " + error_add_order.Error(), comensals
+	}
+
+	return 200, false, "", comensals
 }
 
 func Get_ElementStadistic_ByDay_Service(input_idelement int) (int, bool, string, []interface{}) {

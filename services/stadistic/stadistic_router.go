@@ -59,6 +59,15 @@ func (sr *stadisticRouter_pg) Import_OrderDetails(order_details []models.Pg_Elem
 	}
 }
 
+func (sr *stadisticRouter_pg) Import_NewNameComensal(name_comensal models.Mqtt_UpdateName) {
+
+	//Enviamos los datos importados a registrar
+	error_order_details := Import_NewNameComensal_Service(name_comensal)
+	if error_order_details != nil {
+		log.Fatal(error_order_details)
+	}
+}
+
 /*----------------------GET STADISTICS - COMENSAL----------------------*/
 
 func (sr *stadisticRouter_pg) Get_ComensalStadistic_All(c echo.Context) error {
@@ -137,6 +146,29 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Incoming(c echo.Context) er
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := Get_AnfitrionStadistic_Incoming_Service(start_date, end_date, data_idbusiness)
 	results := Response_StadisticAnfitrion_Incoming{Error: boolerror, DataError: dataerror, Data: data}
+	return c.JSON(status, results)
+}
+
+func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Comensales(c echo.Context) error {
+
+	//Obtenemos los datos del auth
+	status, boolerror, dataerror, data_idbusiness, rol := GetJWT_Anfitrion(c.Request().Header.Get("Authorization"), 2, 2, 1, 3)
+	if dataerror != "" {
+		results := Response{Error: boolerror, DataError: "000" + dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+	if data_idbusiness <= 0 {
+		results := Response{Error: true, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+	if rol != 1 {
+		results := Response{Error: true, DataError: "Este rol no esta permitido para visualizar las estadísticas", Data: ""}
+		return c.JSON(403, results)
+	}
+
+	//Enviamos los datos al servicio
+	status, boolerror, dataerror, data := Get_AnfitrionStadistic_Comensales_Service(data_idbusiness)
+	results := Response_StadisticAnfitrion_Comensal{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }
 

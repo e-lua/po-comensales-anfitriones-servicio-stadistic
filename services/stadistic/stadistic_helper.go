@@ -52,6 +52,12 @@ type Response_StadisticAnfitrion_Incoming struct {
 	Data      models.Pg_Stadistic_Anfitrion_Incoming `json:"data"`
 }
 
+type Response_StadisticAnfitrion_Comensal struct {
+	Error     bool                            `json:"error"`
+	DataError string                          `json:"dataError"`
+	Data      models.Pg_ComensalesByAnfitrion `json:"data"`
+}
+
 type Response_StadisticElements_ByDay struct {
 	Error     bool          `json:"error"`
 	DataError string        `json:"dataError"`

@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Pg_Order struct {
 	IDOrder              int64                   `json:"id"`
@@ -66,6 +70,13 @@ type Pg_Service struct {
 	Price     float32 `json:"price"`
 }
 
+type Pg_Information_Worker struct {
+	IDWorker     int    `json:"idworker"`
+	Name         string `json:"name"`
+	Email        string `json:"email"`
+	CreatedOrder string `json:"createdorder"`
+}
+
 type Pg_Payment struct {
 	IDPayment    int    `json:"idpayment"`
 	Name         string `json:"name"`
@@ -81,19 +92,60 @@ type Pg_Data_Rejected struct {
 }
 
 type Pg_Element struct {
-	IDElement   int     `json:"idelement"`
-	IDBusiness  int     `json:"idbusiness"`
-	IDOrder     int64   `json:"idorder"`
-	NameE       string  `json:"name"`
-	Category    string  `json:"category"`
-	Typefood    string  `json:"typefood"`
-	IDCarta     int     `json:"idcarta"`
-	URLPhoto    string  `json:"url"`
-	Description string  `json:"description"`
-	TypeMoney   int     `json:"typemoney"`
-	UnitPrice   float64 `json:"unitprice"`
-	Quantity    int     `json:"quantity"`
-	Discount    float32 `json:"discount"`
+	IDElement   int         `json:"idelement"`
+	IDBusiness  int         `json:"idbusiness"`
+	IDOrder     int64       `json:"idorder"`
+	NameE       string      `json:"name"`
+	IdCategory  int         `json:"idcategory"`
+	Category    string      `json:"category"`
+	Typefood    string      `json:"typefood"`
+	IDCarta     int         `json:"idcarta"`
+	URLPhoto    string      `json:"url"`
+	Description string      `json:"description"`
+	TypeMoney   int         `json:"typemoney"`
+	UnitPrice   float64     `json:"unitprice"`
+	Quantity    int         `json:"quantity"`
+	Discount    float32     `json:"discount"`
+	Insumos     []Pg_Insumo `json:"insumos"`
+	Costos      float64     `json:"costos"`
+}
+
+type Pg_Insumo struct {
+	Insumo   Mo_Insumo_Response `json:"insumo"`
+	Quantity int                `json:"quantity"`
+}
+
+type Pg_ComensalesByAnfitrion struct {
+	Quantity   int             `json:"quantity"`
+	Comensales []Pg_Comensales `json:"comensals"`
+}
+
+type Pg_Comensales struct {
+	IdComensal int    `json:"idcomensal"`
+	Name       string `json:"name"`
+	Phone      string `json:"measure"`
+	Orders     int    `json:"orders"`
+}
+
+type Mo_Insumo_Response struct {
+	ID             primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Name           string             `json:"name"`
+	Measure        string             `json:"measure"`
+	IDStoreHouse   string             `json:"idstorehouse"`
+	NameStoreHouse string             `json:"namestorehouse"`
+	Description    string             `json:"description"`
+	Stock          []*Mo_Stock        `json:"stock"`
+	Available      bool               `json:"available"`
+	SendToDelete   time.Time          `json:"sendtodelete"`
+}
+
+type Mo_Stock struct {
+	Price        float64   `json:"price"`
+	IdProvider   string    `json:"idprovider"`
+	TimeZone     string    `json:"timezone"`
+	CreatedDate  time.Time `json:"createdDate"`
+	Quantity     int       `json:"quantity"`
+	ProviderName string    `json:"providername"`
 }
 
 type Pg_ToElement_Mqtt struct {
@@ -121,6 +173,8 @@ type Pg_Order_ToCopy struct {
 	Address_Busines      Pg_Address_Business     `json:"addressbusiness"`
 	Information_Comensal Pg_Information_Comensal `json:"informationcomensal"`
 	Address_Comensal     Pg_Address_Comensal     `json:"addresscomensal"`
+	Information_Worker   Pg_Information_Worker   `json:"informationworker"`
+	Ismadebycomensal     bool                    `json:"ismadebycomensal"`
 	Note                 string                  `json:"note"`
 	Service              Pg_Service              `json:"service"`
 	Payment              Pg_Payment              `json:"payment"`

@@ -14,6 +14,7 @@ import (
 
 	"github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	export "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/export"
+	export_file "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/exportfile"
 	stadistic "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/stadistic"
 )
 
@@ -26,6 +27,7 @@ func Manejadores() {
 
 	go Consume_OrderMade()
 	go Consume_OrderDetails()
+	go Consume_UpdateName()
 	go Export_Stadistc()
 
 	e.GET("/", index)
@@ -38,7 +40,9 @@ func Manejadores() {
 	router_stadistic.GET("/comensal", stadistic.StadisticRouter_pg.Get_ComensalStadistic_All)
 	router_stadistic.GET("/anfitrion/order", stadistic.StadisticRouter_pg.Get_AnfitrionStadistic_Orders)
 	router_stadistic.GET("/anfitrion/incoming", stadistic.StadisticRouter_pg.Get_AnfitrionStadistic_Incoming)
+	router_stadistic.GET("/anfitrion/comensales", stadistic.StadisticRouter_pg.Get_AnfitrionStadistic_Comensales)
 	router_stadistic.GET("/anfitrion/element/:idelement", stadistic.StadisticRouter_pg.Get_ElementStadistic_ByDay)
+	router_stadistic.GET("/anfitrion/sendtoemail", export_file.ExportfileRouter_pg.ExportFile_Pedido)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")
@@ -120,6 +124,38 @@ func Consume_OrderDetails() {
 	}()
 
 	<-noStop2
+}
+
+func Consume_UpdateName() {
+	ch, error_conection := models.MqttCN.Channel()
+	if error_conection != nil {
+		log.Fatal("Error connection canal " + error_conection.Error())
+	}
+
+	msgs, err_consume := ch.Consume("comensal/changed_name", "", true, false, false, false, nil)
+	if err_consume != nil {
+		log.Fatal("Error connection cola " + err_consume.Error())
+	}
+
+	noStop3 := make(chan bool)
+
+	go func() {
+		for {
+			time.Sleep(12 * time.Minute)
+			for d := range msgs {
+				var input_name models.Mqtt_UpdateName
+				buf := bytes.NewBuffer(d.Body)
+				decoder := json.NewDecoder(buf)
+				err_consume := decoder.Decode(&input_name)
+				if err_consume != nil {
+					log.Fatal("Error decoding")
+				}
+				stadistic.StadisticRouter_pg.Import_NewNameComensal(input_name)
+			}
+		}
+	}()
+
+	<-noStop3
 }
 
 func Export_Stadistc() {

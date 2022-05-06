@@ -15,8 +15,10 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 	//defer cancelara el contexto
 	defer cancel()
 
+	var information_workers []interface{}
+
 	//Instanciando los valores
-	idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg := []int64{}, []time.Time{}, []string{}, []int{}, []string{}, []string{}, []string{}, []models.Pg_Schedule{}, []models.Pg_Information_Business{}, []models.Pg_Address_Business{}, []models.Pg_Information_Comensal{}, []models.Pg_Address_Comensal{}, []string{}, []models.Pg_Service{}, []models.Pg_Payment{}, []models.Pg_Data_Rejected{}
+	idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg, ismade_by_comensal_pg := []int64{}, []time.Time{}, []string{}, []int{}, []string{}, []string{}, []string{}, []models.Pg_Schedule{}, []models.Pg_Information_Business{}, []models.Pg_Address_Business{}, []models.Pg_Information_Comensal{}, []models.Pg_Address_Comensal{}, []string{}, []models.Pg_Service{}, []models.Pg_Payment{}, []models.Pg_Data_Rejected{}, []bool{}
 
 	for _, om := range ordermades {
 		idorders_pg = append(idorders_pg, om.IDOrder)
@@ -35,13 +37,15 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 		service_pg = append(service_pg, om.Service)
 		payment_pg = append(payment_pg, om.Payment)
 		datarejected_pg = append(datarejected_pg, om.DataRejected)
+		information_workers = append(information_workers, om.Information_Worker)
+		ismade_by_comensal_pg = append(ismade_by_comensal_pg, om.Ismadebycomensal)
 	}
 
 	//Enviado los datos a la base de datos
 	db := models.Conectar_Pg_DB()
 
-	query := `INSERT INTO ordermade(idOrder,dateRegistered,fourCode,idStatus,datelisto,datefinish,dateporfinalizar,schedule,informationBusiness,addressBusiness,informationComensal,addressComensal,note,service,payment,datarejected) (select * from unnest($1::bigint[], $2::timestamp[],$3::int[],$4::int[],$5::varchar(35)[],$6::varchar(35)[],$7::varchar(35)[],$8::jsonb[],$9::jsonb[],$10::jsonb[],$11::jsonb[],$12::jsonb[],$13::varchar(200)[],$14::jsonb[],$15::jsonb[],$16::jsonb[]))`
-	if _, err := db.Exec(ctx, query, idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg); err != nil {
+	query := `INSERT INTO ordermade(idOrder,dateRegistered,fourCode,idStatus,datelisto,datefinish,dateporfinalizar,schedule,informationBusiness,addressBusiness,informationComensal,addressComensal,note,service,payment,datarejected) (select * from unnest($1::bigint[], $2::timestamp[],$3::int[],$4::int[],$5::varchar(35)[],$6::varchar(35)[],$7::varchar(35)[],$8::jsonb[],$9::jsonb[],$10::jsonb[],$11::jsonb[],$12::jsonb[],$13::varchar(200)[],$14::jsonb[],$15::jsonb[],$16::jsonb[],$17::jsonb[],$18::bool[]))`
+	if _, err := db.Exec(ctx, query, idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg, information_workers, ismade_by_comensal_pg); err != nil {
 		return err
 	}
 

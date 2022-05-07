@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	"github.com/labstack/echo/v4"
 )
 
@@ -43,8 +44,21 @@ func (efr *exportfileRouter_pg) ExportFile_Pedido(c echo.Context) error {
 	start_date := c.Request().URL.Query().Get("start_date")
 	end_date := c.Request().URL.Query().Get("end_date")
 
+	//Obtenemos los datos del auth
+	respuesta, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/worker/email")
+	var get_respuesta Response
+	error_decode_respuesta := json.NewDecoder(respuesta.Body).Decode(&get_respuesta)
+	if error_decode_respuesta != nil {
+		results := Response{Error: boolerror, DataError: dataerror, Data: ""}
+		return c.JSON(status, results)
+	}
+
+	var order_data models.Mqtt_Request_Order
+	order_data.IDBusiness = data_idbusiness
+	order_data.Email = get_respuesta.Data
+
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := ExportFile_Pedido_Service(data_idbusiness, start_date, end_date)
+	status, boolerror, dataerror, data := ExportFile_Pedido_Service(order_data, start_date, end_date)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }

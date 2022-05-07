@@ -61,3 +61,9 @@ type Mqtt_Order struct {
 	Information_Worker   Pg_Information_Worker   `json:"informationworker"`
 	Ismadebycomensal     bool                    `json:"ismadebycomensal"`
 }
+
+type Mqtt_Request_Order struct {
+	IDBusiness int          `json:"idbusiness"`
+	Email      string       `json:"email"`
+	Orders     []Mqtt_Order `json:"orders"`
+}

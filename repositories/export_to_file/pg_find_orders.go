@@ -12,7 +12,7 @@ import (
 	"github.com/streadway/amqp"
 )
 
-func Pg_Orders_ToFile(idbusiness int, date_start string, date_end string) error {
+func Pg_Orders_ToFile(order_data models.Mqtt_Request_Order, date_start string, date_end string) error {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -23,7 +23,7 @@ func Pg_Orders_ToFile(idbusiness int, date_start string, date_end string) error 
 
 	db := models.Conectar_Pg_DB()
 	q := "SELECT (om.dateregistered)::varchar(80),om.idorder,om.fourcode,om.schedule,om.informationbusiness,om.addressbusiness,om.informationcomensal,om.addresscomensal,om.note,om.service,om.payment,om.datarejected,json_agg((od.namee,od.category,od.typefood,od.urle,od.descriptione,od.insumos,od.unitprice,od.discount)),SUM(quantity*(unitprice-costo)),SUM((quantity*unitprice)-discount)+(service->>'price')::decimal(8,2),informationworker,ismadebycomensal FROM ordermade as om JOIN orderdetails as od ON om.idorder=od.idorder WHERE informationbusiness->>'idbusiness'=$1 AND (schedule->>'daterequired')::date BETWEEN $2 AND $3 GROUP BY om.idorder,om.fourcode,om.idstatus,om.schedule,om.informationbusiness,om.addressbusiness,om.informationcomensal,om.addresscomensal,om.note,om.service,om.payment,om.datarejected,om.dateregistered"
-	rows, error_shown := db.Query(ctx, q, strconv.Itoa(idbusiness), date_start, date_end)
+	rows, error_shown := db.Query(ctx, q, strconv.Itoa(order_data.IDBusiness), date_start, date_end)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
 	oListOrder := []models.Mqtt_Order{}
@@ -43,6 +43,8 @@ func Pg_Orders_ToFile(idbusiness int, date_start string, date_end string) error 
 		}
 	}
 
+	order_data.Orders = oListOrder
+
 	if quantity > 0 {
 
 		/*----------------------------MQTT----------------------------*/
@@ -53,7 +55,7 @@ func Pg_Orders_ToFile(idbusiness int, date_start string, date_end string) error 
 			log.Error(error_conection)
 		}
 
-		bytes_element, error_serializar_ele := serialize_pedidos(oListOrder)
+		bytes_element, error_serializar_ele := serialize_pedidos(order_data)
 		if error_serializar_ele != nil {
 			log.Error(error_serializar_ele)
 		}
@@ -76,10 +78,10 @@ func Pg_Orders_ToFile(idbusiness int, date_start string, date_end string) error 
 }
 
 //SERIALIZADORA PEDIDO
-func serialize_pedidos(serialize_order []models.Mqtt_Order) ([]byte, error) {
+func serialize_pedidos(order_data models.Mqtt_Request_Order) ([]byte, error) {
 	var b bytes.Buffer
 	encoder := json.NewEncoder(&b)
-	err := encoder.Encode(serialize_order)
+	err := encoder.Encode(order_data)
 	if err != nil {
 		return b.Bytes(), err
 	}

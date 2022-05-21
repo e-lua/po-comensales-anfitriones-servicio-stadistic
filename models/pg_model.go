@@ -21,6 +21,17 @@ type Pg_Order struct {
 	Payment              Pg_Payment              `json:"payment"`
 	DataRejected         Pg_Data_Rejected        `json:"datarejected"`
 	Elements             []Pg_Element            `json:"elements"`
+	IsLegal              bool                    `json:"islegal"`
+	LegalInfo            Pg_Information_Legal    `json:"informationlegal"`
+}
+
+type Pg_Information_Legal struct {
+	IDWorker      int       `json:"idworker"`
+	Name          string    `json:"name"`
+	Email         string    `json:"email"`
+	Type          int       `json:"type"`
+	Description   string    `json:"description"`
+	DateLegalized time.Time `json:"datelegalized"`
 }
 
 type Pg_Schedule struct {
@@ -33,8 +44,9 @@ type Pg_Schedule struct {
 }
 
 type Pg_Information_Business struct {
-	IDBusiness int    `json:"idbusiness"`
-	Name       string `json:"name"`
+	IDBusiness    int    `json:"idbusiness"`
+	Name          string `json:"name"`
+	Legalidentity string `json:"legalidentity"`
 }
 
 type Pg_Address_Business struct {
@@ -48,9 +60,10 @@ type Pg_Address_Business struct {
 }
 
 type Pg_Information_Comensal struct {
-	IDComensal   int    `json:"idcomensal"`
-	Name         string `json:"name"`
-	PhoneContact string `json:"phonecontact"`
+	IDComensal    int    `json:"idcomensal"`
+	Name          string `json:"name"`
+	PhoneContact  string `json:"phonecontact"`
+	Legalidentity string `json:"legalidentity"`
 }
 
 type Pg_Address_Comensal struct {
@@ -108,6 +121,7 @@ type Pg_Element struct {
 	Discount    float32     `json:"discount"`
 	Insumos     []Pg_Insumo `json:"insumos"`
 	Costos      float64     `json:"costos"`
+	IVA         float32     `json:"iva"`
 }
 
 type Pg_Insumo struct {
@@ -123,7 +137,7 @@ type Pg_ComensalesByAnfitrion struct {
 type Pg_Comensales struct {
 	IdComensal int    `json:"idcomensal"`
 	Name       string `json:"name"`
-	Phone      string `json:"measure"`
+	Phone      string `json:"phone"`
 	Orders     int    `json:"orders"`
 }
 

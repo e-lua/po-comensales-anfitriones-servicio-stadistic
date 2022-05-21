@@ -40,6 +40,8 @@ type Mqtt_Element_Order struct {
 	Insumos     []Mqtt_Insumo_Elements `json:"f6"`
 	UnitPrice   float64                `json:"f7"`
 	Discount    float32                `json:"f8"`
+	Costo       float32                `json:"f9"`
+	IVA         float32                `json:"f10"`
 }
 
 type Mqtt_Order struct {

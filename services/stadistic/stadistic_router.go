@@ -166,8 +166,16 @@ func (sr *stadisticRouter_pg) Get_AnfitrionStadistic_Comensales(c echo.Context) 
 		return c.JSON(403, results)
 	}
 
+	//Recibimos el id de la proveedor
+	limit := c.Param("limit")
+	limit_int, _ := strconv.Atoi(limit)
+
+	//Recibimos el id de la proveedor
+	offset := c.Param("offset")
+	offset_int, _ := strconv.Atoi(offset)
+
 	//Enviamos los datos al servicio
-	status, boolerror, dataerror, data := Get_AnfitrionStadistic_Comensales_Service(data_idbusiness)
+	status, boolerror, dataerror, data := Get_AnfitrionStadistic_Comensales_Service(data_idbusiness, limit_int, offset_int)
 	results := Response_StadisticAnfitrion_Comensal{Error: boolerror, DataError: dataerror, Data: data}
 	return c.JSON(status, results)
 }

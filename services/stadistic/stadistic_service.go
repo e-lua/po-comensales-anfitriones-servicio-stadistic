@@ -76,10 +76,10 @@ func Get_AnfitrionStadistic_Incoming_Service(date_init string, date_end string, 
 	return 200, false, "", incoming
 }
 
-func Get_AnfitrionStadistic_Comensales_Service(idbusiness int) (int, bool, string, models.Pg_ComensalesByAnfitrion) {
+func Get_AnfitrionStadistic_Comensales_Service(idbusiness int, limit int, offset int) (int, bool, string, models.Pg_ComensalesByAnfitrion) {
 
 	//Enviamos los datos a la BD
-	comensals, error_add_order := stadistic_anfitrion_repository.Pg_Find_ComensalesByAnfitrion(idbusiness)
+	comensals, error_add_order := stadistic_anfitrion_repository.Pg_Find_ComensalesByAnfitrion(idbusiness, limit, offset)
 	if error_add_order != nil {
 		return 500, true, "Error interno en el servidor al buscar los comensales, detalle: " + error_add_order.Error(), comensals
 	}

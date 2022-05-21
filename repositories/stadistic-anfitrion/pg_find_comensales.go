@@ -8,7 +8,7 @@ import (
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 )
 
-func Pg_Find_ComensalesByAnfitrion(idbusiness int) (models.Pg_ComensalesByAnfitrion, error) {
+func Pg_Find_ComensalesByAnfitrion(idbusiness int, limit int, offset int) (models.Pg_ComensalesByAnfitrion, error) {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -16,8 +16,8 @@ func Pg_Find_ComensalesByAnfitrion(idbusiness int) (models.Pg_ComensalesByAnfitr
 	defer cancel()
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT (informationcomensal->>'idcomensal')::integer,informationcomensal->>'name',informationcomensal->>'phonecontact',COUNT(idorder)as quantity FROM ordermade WHERE informationbusiness->>'idbusiness'=$1 GROUP BY informationcomensal ORDER BY quantity DESC"
-	rows, error_shown := db.Query(ctx, q, strconv.Itoa(idbusiness))
+	q := "SELECT (informationcomensal->>'idcomensal')::integer,informationcomensal->>'name',informationcomensal->>'phonecontact',COUNT(idorder)as quantity FROM ordermade WHERE informationbusiness->>'idbusiness'=$1 GROUP BY informationcomensal ORDER BY quantity DESC LIMIT $2 OFFSET $3"
+	rows, error_shown := db.Query(ctx, q, strconv.Itoa(idbusiness), limit, offset)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
 	var oComensalesByAnf models.Pg_ComensalesByAnfitrion

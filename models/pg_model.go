@@ -129,11 +129,6 @@ type Pg_Insumo struct {
 	Quantity int                `json:"quantity"`
 }
 
-type Pg_ComensalesByAnfitrion struct {
-	Quantity   int             `json:"quantity"`
-	Comensales []Pg_Comensales `json:"comensals"`
-}
-
 type Pg_Comensales struct {
 	IdComensal int    `json:"idcomensal"`
 	Name       string `json:"name"`

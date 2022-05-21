@@ -76,7 +76,7 @@ func Get_AnfitrionStadistic_Incoming_Service(date_init string, date_end string, 
 	return 200, false, "", incoming
 }
 
-func Get_AnfitrionStadistic_Comensales_Service(idbusiness int, limit int, offset int) (int, bool, string, models.Pg_ComensalesByAnfitrion) {
+func Get_AnfitrionStadistic_Comensales_Service(idbusiness int, limit int, offset int) (int, bool, string, []models.Pg_Comensales) {
 
 	//Enviamos los datos a la BD
 	comensals, error_add_order := stadistic_anfitrion_repository.Pg_Find_ComensalesByAnfitrion(idbusiness, limit, offset)

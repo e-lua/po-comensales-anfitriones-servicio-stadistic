@@ -8,7 +8,7 @@ import (
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 )
 
-func Pg_Find_ComensalesByAnfitrion(idbusiness int, limit int, offset int) (models.Pg_ComensalesByAnfitrion, error) {
+func Pg_Find_ComensalesByAnfitrion(idbusiness int, limit int, offset int) ([]models.Pg_Comensales, error) {
 
 	//Tiempo limite al contexto
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
@@ -20,7 +20,7 @@ func Pg_Find_ComensalesByAnfitrion(idbusiness int, limit int, offset int) (model
 	rows, error_shown := db.Query(ctx, q, strconv.Itoa(idbusiness), limit, offset)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
-	var oComensalesByAnf models.Pg_ComensalesByAnfitrion
+	var oComensalesByAnf []models.Pg_Comensales
 
 	//Instanciamos un contador
 	counter := 0
@@ -33,7 +33,7 @@ func Pg_Find_ComensalesByAnfitrion(idbusiness int, limit int, offset int) (model
 	for rows.Next() {
 		var oComensal models.Pg_Comensales
 		rows.Scan(&oComensal.IdComensal, &oComensal.Name, &oComensal.Phone, &oComensal.Orders)
-		oComensalesByAnf.Comensales = append(oComensalesByAnf.Comensales, oComensal)
+		oComensalesByAnf = append(oComensalesByAnf, oComensal)
 		counter += 1
 	}
 

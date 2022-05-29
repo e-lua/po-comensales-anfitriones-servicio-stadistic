@@ -44,9 +44,10 @@ type Pg_Schedule struct {
 }
 
 type Pg_Information_Business struct {
-	IDBusiness    int    `json:"idbusiness"`
-	Name          string `json:"name"`
-	Legalidentity string `json:"legalidentity"`
+	IDBusiness      int    `json:"idbusiness"`
+	Name            string `json:"name"`
+	Legalidentity   string `json:"legalidentity"`
+	Typesuscription int    `json:"typesuscription"`
 }
 
 type Pg_Address_Business struct {

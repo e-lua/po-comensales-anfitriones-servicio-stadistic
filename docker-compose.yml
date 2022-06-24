@@ -1,9 +1,9 @@
 version: "3.3"
 
 services: 
-  c-a-pedidos:
+  c-a-stadistic:
     labels: 
-      - "traefik.http.routers.c-carta.rule=Host(`c-a-pedidos.restoner-api.fun`)"
+      - "traefik.http.routers.c-carta.rule=Host(`c-a-stadistic.restoner-api.fun`)"
     restart: always 
     build: .
     networks:

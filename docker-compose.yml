@@ -22,6 +22,8 @@ services:
       - backend
     ports:
       - "8620:5432"
+    volumes:
+      - 'postgresql_master_data:/bitnami/postgresql'
     environment:
       - DATABASE_HOST=127.0.0.1
       - POSTGRES_USER=postgreshxh5
@@ -57,7 +59,8 @@ networks:
     driver: bridge
     ipam: 
       driver: default 
-
+volumes:
+  postgresql_master_data:
 
 
 

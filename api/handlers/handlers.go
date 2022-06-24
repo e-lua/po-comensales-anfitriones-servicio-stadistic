@@ -76,18 +76,15 @@ func Consume_OrderMade() {
 	noStop := make(chan bool)
 
 	go func() {
-		for {
-			time.Sleep(10 * time.Minute)
-			for d := range msgs {
-				var order_tocopy []models.Pg_Order_ToCopy
-				buf := bytes.NewBuffer(d.Body)
-				decoder := json.NewDecoder(buf)
-				err_consume := decoder.Decode(&order_tocopy)
-				if err_consume != nil {
-					log.Fatal("Error decoding")
-				}
-				stadistic.StadisticRouter_pg.Import_OrderMade(order_tocopy)
+		for d := range msgs {
+			var order_tocopy []models.Pg_Order_ToCopy
+			buf := bytes.NewBuffer(d.Body)
+			decoder := json.NewDecoder(buf)
+			err_consume := decoder.Decode(&order_tocopy)
+			if err_consume != nil {
+				log.Fatal("Error decoding")
 			}
+			stadistic.StadisticRouter_pg.Import_OrderMade(order_tocopy)
 		}
 	}()
 

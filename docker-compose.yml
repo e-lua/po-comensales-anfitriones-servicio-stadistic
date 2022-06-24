@@ -17,18 +17,36 @@ services:
   postgres:
     container_name: postgres_db
     restart: always
-    image: "postgres:13"
+    image: "bitnami/postgresql:14.4.0"
     networks:
       - backend
     ports:
-      - "8620:5432"
+      - "5432"
     volumes:
       - 'postgresql_master_data:/bitnami/postgresql'
     environment:
+      - POSTGRESQL_REPLICATION_MODE=master
       - DATABASE_HOST=127.0.0.1
-      - POSTGRES_USER=postgreshxh5
-      - POSTGRES_PASSWORD=dfsdf4FERg45234SERFsdrf346erbeg
-      - POSTGRES_DB=postgresxh5
+      - POSTGRESQL_REPLICATION_USER=replicacion_usuario_123f24
+      - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasenia_123f24
+      - POSTGRESQL_USERNAME=postgreshxh5
+      - POSTGRESQL_PASSWORD=dfsdf4FERg45234SERFsdrf346erbeg
+      - POSTGRESQL_DATABASE=postgresxh5
+  postgresql-slave:
+    image: 'bitnami/postgresql:14.4.0'
+    ports:
+      - "6432:5432"
+    networks:
+      - backend
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=replicacion_usuario_123
+      - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasenia_123
+      - POSTGRESQL_MASTER_HOST=postgres
+      - POSTGRESQL_PASSWORD=dfsdf4FERg45234SERFsdrf346erbeg
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
   pgadmin:
     restart: always
     image: "dpage/pgadmin4"

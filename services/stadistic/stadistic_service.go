@@ -33,6 +33,7 @@ func Import_OrderMade_Service(order_mades []models.Pg_Order_ToCopy) error {
 	return nil
 }
 
+/*
 func Import_OrderDetails_Service(order_details []models.Pg_Element) error {
 
 	error_add_orderdetails := order_repository.Pg_Insert_OrderDetails(order_details)
@@ -41,7 +42,7 @@ func Import_OrderDetails_Service(order_details []models.Pg_Element) error {
 	}
 
 	return nil
-}
+}*/
 
 func Get_ComensalStadistic_All_Service(date_init string, date_end string, idcomensal int) (int, bool, string, models.Pg_Stadistic_Comensal) {
 

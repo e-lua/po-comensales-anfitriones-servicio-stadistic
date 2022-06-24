@@ -26,12 +26,12 @@ type Pg_Order struct {
 }
 
 type Pg_Information_Legal struct {
-	IDWorker      int       `json:"idworker"`
-	Name          string    `json:"name"`
-	Email         string    `json:"email"`
-	Type          int       `json:"type"`
-	Description   string    `json:"description"`
-	DateLegalized time.Time `json:"datelegalized"`
+	IDWorker      int    `json:"idworker"`
+	Name          string `json:"name"`
+	Email         string `json:"email"`
+	Type          int    `json:"type"`
+	Description   string `json:"description"`
+	DateLegalized string `json:"datelegalized"`
 }
 
 type Pg_Schedule struct {
@@ -188,7 +188,40 @@ type Pg_Order_ToCopy struct {
 	Note                 string                  `json:"note"`
 	Service              Pg_Service              `json:"service"`
 	Payment              Pg_Payment              `json:"payment"`
+	Elements             []V2_Pg_Element         `json:"elements"`
 	DataRejected         Pg_Data_Rejected        `json:"datarejected"`
+	LegalInfo            Pg_Information_Legal    `json:"informationlegal"`
+	IsLegal              bool                    `json:"islegal"`
+}
+
+type V2_Pg_Element struct {
+	IDElement   int                     `json:"idelement"`
+	IDBusiness  int                     `json:"idbusiness"`
+	IDCarta     int                     `json:"idcarta"`
+	NameE       string                  `json:"name"`
+	IdCategory  int                     `json:"idcategory"`
+	Category    string                  `json:"category"`
+	TypeFood    string                  `json:"typefood"`
+	URLPhoto    string                  `json:"url"`
+	Description string                  `json:"description"`
+	TypeMoney   int                     `json:"typemoney"`
+	UnitPrice   float64                 `json:"unitprice"`
+	Quantity    int                     `json:"quantity"`
+	Discount    float32                 `json:"discount"`
+	Insumos     []Pg_Mo_Insumo_Elements `json:"insumos"`
+	Costo       float64                 `json:"costo"`
+	IVA         float64                 `json:"iva"`
+}
+
+type Pg_Mo_Insumo_Elements struct {
+	ID             primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Name           string             `json:"name"`
+	Measure        string             `json:"measure"`
+	IDStoreHouse   string             `json:"idstorehouse"`
+	NameStoreHouse string             `json:"namestorehouse"`
+	Description    string             `json:"description"`
+	Stock          []*Mo_Stock        `json:"stock"`
+	Quantity       int                `json:"quantity"`
 }
 
 type Pg_Stadistic_Comensal struct {

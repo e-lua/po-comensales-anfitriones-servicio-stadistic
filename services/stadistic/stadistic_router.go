@@ -50,6 +50,7 @@ func (sr *stadisticRouter_pg) Import_OrderMade(order_tocopy []models.Pg_Order_To
 	}
 }
 
+/*
 func (sr *stadisticRouter_pg) Import_OrderDetails(order_details []models.Pg_Element) {
 
 	//Enviamos los datos importados a registrar
@@ -58,7 +59,7 @@ func (sr *stadisticRouter_pg) Import_OrderDetails(order_details []models.Pg_Elem
 		log.Fatal(error_order_details)
 	}
 }
-
+*/
 func (sr *stadisticRouter_pg) Import_NewNameComensal(name_comensal models.Mqtt_UpdateName) {
 
 	//Enviamos los datos importados a registrar

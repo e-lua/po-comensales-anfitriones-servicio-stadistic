@@ -25,7 +25,7 @@ func Manejadores() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	//go Consume_OrderMade()
+	go Consume_OrderMade()
 	//go Consume_OrderDetails()
 	go Consume_UpdateName()
 	go Export_Stadistc()
@@ -94,6 +94,7 @@ func Consume_OrderMade() {
 	<-noStop
 }
 
+/*
 func Consume_OrderDetails() {
 	ch, error_conection := models.MqttCN.Channel()
 	if error_conection != nil {
@@ -125,7 +126,7 @@ func Consume_OrderDetails() {
 
 	<-noStop2
 }
-
+*/
 func Consume_UpdateName() {
 	ch, error_conection := models.MqttCN.Channel()
 	if error_conection != nil {

@@ -25,8 +25,8 @@ func Manejadores() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	go Consume_OrderMade()
-	go Consume_OrderDetails()
+	//go Consume_OrderMade()
+	//go Consume_OrderDetails()
 	go Consume_UpdateName()
 	go Export_Stadistc()
 

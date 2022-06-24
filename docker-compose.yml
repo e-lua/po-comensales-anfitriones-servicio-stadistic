@@ -1,17 +1,13 @@
 version: "3.3"
 
 services: 
-  app:
-    container_name: restoneranfitrion_app_servicio_inventario
+  c-a-pedidos:
+    labels: 
+      - "traefik.http.routers.c-carta.rule=Host(`c-a-pedidos.restoner-api.fun`)"
     restart: always 
     build: .
-    labels: 
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`localhost`)"
     networks:
       - backend
-    ports:
-      - "6630:4320"
     links:
       - postgres
   postgres:
@@ -26,7 +22,6 @@ services:
       - 'postgresql_master_data:/bitnami/postgresql'
     environment:
       - POSTGRESQL_REPLICATION_MODE=master
-      - DATABASE_HOST=127.0.0.1
       - POSTGRESQL_REPLICATION_USER=replicacion_usuario_123f24
       - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasenia_123f24
       - POSTGRESQL_USERNAME=postgreshxh5
@@ -42,8 +37,8 @@ services:
       - postgres
     environment:
       - POSTGRESQL_REPLICATION_MODE=slave
-      - POSTGRESQL_REPLICATION_USER=replicacion_usuario_123
-      - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasenia_123
+      - POSTGRESQL_REPLICATION_USER=replicacion_usuario_123f24
+      - POSTGRESQL_REPLICATION_PASSWORD=replicacion_contrasenia_123f24
       - POSTGRESQL_MASTER_HOST=postgres
       - POSTGRESQL_PASSWORD=dfsdf4FERg45234SERFsdrf346erbeg
       - POSTGRESQL_MASTER_PORT_NUMBER=5432
@@ -61,11 +56,8 @@ services:
       - postgres
   traefik: # apache.app.test - nginx.app.test
     image: traefik:v2.3.6
-    labels: 
-      - "traefik.http.routers.api.rule=Host(`localhost`)"
     ports: 
-      - 102:80
-      - 6632:8080
+      - 80:80
       - 443:443
     volumes: 
       - /var/run/docker.sock:/var/run/docker.sock

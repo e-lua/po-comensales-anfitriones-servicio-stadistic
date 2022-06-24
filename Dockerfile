@@ -8,6 +8,6 @@ WORKDIR /app
 
 RUN make build
 
-EXPOSE 6500
+EXPOSE 4320
 
 CMD ["./ms-api"]

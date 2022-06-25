@@ -86,7 +86,7 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 	}
 
 	//ADD ORDERMADE
-	query := `INSERT INTO ordermade(idOrder,dateRegistered,fourCode,idStatus,datelisto,datefinish,dateporfinalizar,schedule,informationBusiness,addressBusiness,informationComensal,addressComensal,note,service,payment,datarejected,informationWorker,ismadebycomensal,islegal,informationLegal,profitmargin) (select * from unnest($1::bigint[], $2::timestamp[],$3::int[],$4::int[],$5::varchar(35)[],$6::varchar(35)[],$7::varchar(35)[],$8::jsonb[],$9::jsonb[],$10::jsonb[],$11::jsonb[],$12::jsonb[],$13::varchar(200)[],$14::jsonb[],$15::jsonb[],$16::jsonb[],$17::jsonb[],$18::bool[],$19::bool[],$20::jsonb[],$21::decimal(10,2)[]))`
+	query := `INSERT INTO ordermade(idOrder,dateRegistered,fourCode,idStatus,datelisto,datefinish,dateporfinalizar,schedule,informationBusiness,addressBusiness,informationComensal,addressComensal,note,service,payment,datarejected,informationWorker,ismadebycomensal,islegal,informationLegal,estimatedmargin) (select * from unnest($1::bigint[], $2::timestamp[],$3::int[],$4::int[],$5::varchar(35)[],$6::varchar(35)[],$7::varchar(35)[],$8::jsonb[],$9::jsonb[],$10::jsonb[],$11::jsonb[],$12::jsonb[],$13::varchar(200)[],$14::jsonb[],$15::jsonb[],$16::jsonb[],$17::jsonb[],$18::bool[],$19::bool[],$20::jsonb[],$21::decimal(10,2)[]))`
 	if _, err := tx.Exec(ctx, query, idorders_pg, data_registered_pg, fourcode_pg, idstatus_pg, datelisto_pg, datefinish_pg, dateporfinalizar_pg, schedule_pg, informationbusiness_pg, addressbusiness_pg, informationcomensal_pg, addresscomensal_pg, note_pg, service_pg, payment_pg, datarejected_pg, information_workers, ismade_by_comensal_pg, islegal_pg, informationlegal, profit_pg); err != nil {
 		tx.Rollback(ctx)
 		return err

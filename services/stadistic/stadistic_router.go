@@ -30,7 +30,7 @@ func GetJWT(jwt string) (int, bool, string, int) {
 
 func GetJWT_Anfitrion(jwt string, service int, module int, epic int, endpoint int) (int, bool, string, int, int) {
 	//Obtenemos los datos del auth
-	respuesta_b, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:5000/v1/trylogin?jwt=" + jwt + "&service=" + strconv.Itoa(service) + "&module=" + strconv.Itoa(module) + "&epic=" + strconv.Itoa(epic) + "&endpoint=" + strconv.Itoa(endpoint))
+	respuesta_b, _ := http.Get("http://a-registro-authenticacion.restoner-api.fun:80/v1/trylogin?jwt=" + jwt + "&service=" + strconv.Itoa(service) + "&module=" + strconv.Itoa(module) + "&epic=" + strconv.Itoa(epic) + "&endpoint=" + strconv.Itoa(endpoint))
 	var get_respuesta_b ResponseJWT_B
 	error_decode_respuesta_b := json.NewDecoder(respuesta_b.Body).Decode(&get_respuesta_b)
 	if error_decode_respuesta_b != nil {

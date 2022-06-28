@@ -54,7 +54,7 @@ services:
       PGADMIN_DEFAULT_PASSWORD: f436GERT5g35HUty43f46
     depends_on:
       - postgres
-  traefik: # apache.app.test - nginx.app.test
+  traefik:
     image: traefik:v2.3.6
     ports: 
       - 80:80

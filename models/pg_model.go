@@ -192,7 +192,7 @@ type Pg_Order_ToCopy struct {
 	DataRejected         Pg_Data_Rejected        `json:"datarejected"`
 	LegalInfo            Pg_Information_Legal    `json:"informationlegal"`
 	IsLegal              bool                    `json:"islegal"`
-	EstimatedProfit      float32                 `json:"estimatedprofit"`
+	EstimatedProfit      float32                 `json:"profitmargin"`
 }
 
 type V2_Pg_Element struct {

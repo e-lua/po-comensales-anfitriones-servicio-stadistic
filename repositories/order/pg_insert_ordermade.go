@@ -26,7 +26,7 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 	var insumos_od []interface{}
 
 	//Instanciando los valores
-	idelement_od, idbusiness_od, idorder_od, name_od, idcarta_od, url_od, description_od, typemoney_od, unitprice_od, quantity_od, discount_od, category_od, typefood_od, idcategory_od, costos_od := []int{}, []int{}, []int64{}, []string{}, []int{}, []string{}, []string{}, []int{}, []float64{}, []int{}, []float32{}, []string{}, []string{}, []int{}, []float64{}
+	idelement_od, idbusiness_od, idorder_od, name_od, idcarta_od, url_od, description_od, typemoney_od, unitprice_od, quantity_od, discount_od, category_od, typefood_od, idcategory_od, costos_od, iva_od := []int{}, []int{}, []int64{}, []string{}, []int{}, []string{}, []string{}, []int{}, []float64{}, []int{}, []float32{}, []string{}, []string{}, []int{}, []float64{}, []float64{}
 
 	/*-------------------------------------------------------------------------------------------------------------------------*/
 
@@ -70,6 +70,10 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 			idcategory_od = append(idcategory_od, od.IdCategory)
 			insumos_od = append(insumos_od, od.Insumos)
 			costos_od = append(costos_od, od.Costo)
+			iva_od = append(iva_od, od.IVA)
+
+			println(idelement_od, idbusiness_od, idorder_od, name_od, idcarta_od, url_od, description_od, typemoney_od, unitprice_od, quantity_od, discount_od, category_od, typefood_od, idcategory_od, costos_od, iva_od)
+			println("SALIENDO DEL OM ELEMENTOS>>>>>>>>")
 		}
 
 	}
@@ -93,8 +97,9 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 	}
 
 	//ADD ORDERDETAILS
-	query_od := `INSERT INTO OrderDetails(idelement,idorder,idbusiness,idcarta,unitprice,quantity,discount,namee,descriptione,typemoney,urle,category,typefood,idcategory,insumos,costo) (select * from unnest($1::int[], $2::bigint[],$3::int[],$4::int[],$5::decimal(8,2)[],$6::int[],$7::decimal(8,2)[],$8::varchar(100)[],$9::varchar(250)[],$10::int[],$11::varchar(230)[],$12::varchar(100)[],$13::varchar(100)[],$14::int[],$15::jsonb[],$16::real[]))`
-	if _, err_od := tx.Exec(ctx, query_od, idelement_od, idorder_od, idbusiness_od, idcarta_od, unitprice_od, quantity_od, discount_od, name_od, description_od, typemoney_od, url_od, category_od, typefood_od, idcategory_od, insumos_od, costos_od); err_od != nil {
+	query_od := `INSERT INTO OrderDetails(idelement,idorder,idbusiness,idcarta,unitprice,quantity,discount,namee,descriptione,typemoney,urle,category,typefood,idcategory,insumos,costo,iva) (select * from unnest($1::int[], $2::bigint[],$3::int[],$4::int[],$5::decimal(8,2)[],$6::int[],$7::decimal(8,2)[],$8::varchar(100)[],$9::varchar(250)[],$10::int[],$11::varchar(230)[],$12::varchar(100)[],$13::varchar(100)[],$14::int[],$15::jsonb[],$16::decimal(10,2)[],$17::decimal(10,2)[]))`
+	if _, err_od := tx.Exec(ctx, query_od, idelement_od, idorder_od, idbusiness_od, idcarta_od, unitprice_od, quantity_od, discount_od, name_od, description_od, typemoney_od, url_od, category_od, typefood_od, idcategory_od, insumos_od, costos_od, iva_od); err_od != nil {
+		tx.Rollback(ctx)
 		return err_od
 	}
 

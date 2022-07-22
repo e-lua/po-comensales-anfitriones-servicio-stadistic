@@ -193,6 +193,7 @@ type Pg_Order_ToCopy struct {
 	LegalInfo            Pg_Information_Legal    `json:"informationlegal"`
 	IsLegal              bool                    `json:"islegal"`
 	EstimatedProfit      float32                 `json:"profitmargin"`
+	TotalDiscount        float32                 `json:"totaldiscount"`
 }
 
 type V2_Pg_Element struct {

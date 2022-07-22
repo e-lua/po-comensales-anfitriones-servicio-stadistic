@@ -35,9 +35,17 @@ func Pg_Insert_OrderMade(ordermades []models.Pg_Order_ToCopy) error {
 		data_registered_pg = append(data_registered_pg, om.DateRegistered)
 		fourcode_pg = append(fourcode_pg, strconv.Itoa(om.FourCode))
 		idstatus_pg = append(idstatus_pg, om.IdStatus)
-		datelisto_pg = append(datelisto_pg, om.DateListo)
-		datefinish_pg = append(datefinish_pg, om.DateFinish)
-		dateporfinalizar_pg = append(dateporfinalizar_pg, om.DatePorFInalizar)
+
+		if !om.DataRejected.MadeByComensal {
+			datelisto_pg = append(datelisto_pg, om.DateRegistered.Format("2006-01-02 15:04:05"))
+			datefinish_pg = append(datefinish_pg, om.DateRegistered.Format("2006-01-02 15:04:05"))
+			dateporfinalizar_pg = append(dateporfinalizar_pg, om.DateRegistered.Format("2006-01-02 15:04:05"))
+		} else {
+			datelisto_pg = append(datelisto_pg, om.DateListo)
+			datefinish_pg = append(datefinish_pg, om.DateFinish)
+			dateporfinalizar_pg = append(dateporfinalizar_pg, om.DatePorFInalizar)
+		}
+
 		schedule_pg = append(schedule_pg, om.Schedule)
 		informationbusiness_pg = append(informationbusiness_pg, om.Information_Business)
 		addressbusiness_pg = append(addressbusiness_pg, om.Address_Busines)

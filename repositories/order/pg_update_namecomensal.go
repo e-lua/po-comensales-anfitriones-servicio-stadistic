@@ -17,7 +17,7 @@ func Pg_Update_NameComensal(inputname models.Mqtt_UpdateName) error {
 
 	db := models.Conectar_Pg_DB()
 
-	query := `UUPDATE ordermade SET informationcomensal = jsonb_set(informationcomensal, '{name}', '$1', false) WHERE informationcomensal->>'idcomensal'=$2;`
+	query := `UPDATE ordermade SET informationcomensal = jsonb_set(informationcomensal, '{name}', '$1', false) WHERE informationcomensal->>'idcomensal'=$2;`
 	if _, err := db.Exec(ctx, query, `"`+inputname.Name+`"`, strconv.Itoa(inputname.IdComensal)); err != nil {
 		return err
 	}

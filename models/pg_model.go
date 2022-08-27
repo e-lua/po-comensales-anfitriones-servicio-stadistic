@@ -255,7 +255,9 @@ type Pg_Stadistic_Anfitrion_Incoming struct {
 }
 
 type Pg_Export_ByElement struct {
-	IdElement int    `json:"idelement"`
-	Quantity  int    `json:"quantity"`
-	Datetime  string `json:"datetime"`
+	IdElement   int     `json:"idelement"`
+	Quantity    int     `json:"quantity"`
+	Datetime    string  `json:"datetime"`
+	TotalAmount float32 `json:"totalamount"`
+	TotalCost   float32 `json:"totalcost"`
 }

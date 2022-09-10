@@ -22,7 +22,7 @@ func Pg_Orders_ToFile(order_data models.Mqtt_Request_Order, date_start string, d
 	quantity := 0
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT (om.dateregistered)::varchar(80),om.idorder,om.fourcode,om.schedule,om.informationbusiness,om.addressbusiness,om.informationcomensal,om.addresscomensal,om.note,om.service,om.payment,om.datarejected,json_agg((od.namee,od.category,od.typefood,od.urle,od.descriptione,od.insumos,od.unitprice,od.discount,od.costo,od.iva)),((SUM((quantity*unitprice)-discount))-(SUM(quantity*costo))),SUM((quantity*unitprice)-discount)+(service->>'price')::decimal(8,2),informationworker,ismadebycomensal FROM ordermade as om JOIN orderdetails as od ON om.idorder=od.idorder WHERE informationbusiness->>'idbusiness'=$1 AND (schedule->>'daterequired')::date BETWEEN $2 AND $3 GROUP BY om.idorder,om.fourcode,om.idstatus,om.schedule,om.informationbusiness,om.addressbusiness,om.informationcomensal,om.addresscomensal,om.note,om.service,om.payment,om.datarejected,om.dateregistered"
+	q := "SELECT (om.dateregistered)::varchar(80),om.idorder,om.fourcode,om.schedule,om.informationbusiness,om.addressbusiness,om.informationcomensal,om.addresscomensal,om.service,om.payment,((SUM((quantity*unitprice)-discount))-(SUM(quantity*costo))),SUM((quantity*unitprice)-discount)+(service->>'price')::decimal(8,2),informationworker,ismadebycomensal FROM ordermade as om JOIN orderdetails as od ON om.idorder=od.idorder WHERE informationbusiness->>'idbusiness'=$1 AND (schedule->>'daterequired')::date BETWEEN $2 AND $3 GROUP BY om.idorder,om.fourcode,om.idstatus,om.schedule,om.informationbusiness,om.addressbusiness,om.informationcomensal,om.addresscomensal,om.note,om.service,om.payment,om.datarejected,om.dateregistered"
 	rows, error_shown := db.Query(ctx, q, strconv.Itoa(order_data.IDBusiness), date_start, date_end)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
@@ -36,7 +36,7 @@ func Pg_Orders_ToFile(order_data models.Mqtt_Request_Order, date_start string, d
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		oOrder := models.Mqtt_Order{}
-		rows.Scan(&oOrder.DateRegistered, &oOrder.IDOrder, &oOrder.FourCode, &oOrder.Schedule, &oOrder.Information_Business, &oOrder.Address_Busines, &oOrder.Information_Comensal, &oOrder.Address_Comensal, &oOrder.Note, &oOrder.Service, &oOrder.Payment, &oOrder.DataRejected, &oOrder.Elements, &oOrder.EstimatedProfit, &oOrder.TotalPrice, &oOrder.Information_Worker, &oOrder.Ismadebycomensal)
+		rows.Scan(&oOrder.DateRegistered, &oOrder.IDOrder, &oOrder.FourCode, &oOrder.Schedule, &oOrder.Information_Business, &oOrder.Address_Busines, &oOrder.Information_Comensal, &oOrder.Address_Comensal, &oOrder.Service, &oOrder.Payment, &oOrder.EstimatedProfit, &oOrder.TotalPrice, &oOrder.Information_Worker, &oOrder.Ismadebycomensal)
 		oListOrder = append(oListOrder, oOrder)
 		if oOrder.IDOrder > 0 {
 			quantity += 1

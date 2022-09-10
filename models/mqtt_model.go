@@ -21,14 +21,8 @@ type Mqtt_Stock struct {
 }
 
 type Mqtt_Insumo_Elements struct {
-	ID             primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
-	Name           string             `json:"name"`
-	Measure        string             `json:"measure"`
-	IDStoreHouse   string             `json:"idstorehouse"`
-	NameStoreHouse string             `json:"namestorehouse"`
-	Description    string             `json:"description"`
-	Stock          []Mqtt_Stock       `json:"stock"`
-	Quantity       int                `json:"quantity"`
+	ID       primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Quantity int                `json:"quantity"`
 }
 
 type Mqtt_Element_Order struct {
@@ -47,7 +41,7 @@ type Mqtt_Element_Order struct {
 type Mqtt_Order struct {
 	DateRegistered       string                  `json:"dateregistered"`
 	IDOrder              int64                   `json:"id"`
-	FourCode             int                     `json:"fourcode"`
+	FourCode             string                  `json:"fourcode"`
 	Schedule             Pg_Schedule             `json:"schedule"`
 	Information_Business Pg_Information_Business `json:"informationbusiness"`
 	Address_Busines      Pg_Address_Business     `json:"addressbusiness"`

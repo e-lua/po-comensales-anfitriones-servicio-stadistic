@@ -4,6 +4,8 @@ import (
 
 	//REPOSITORIES
 
+	"time"
+
 	"github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	export_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/export"
 )
@@ -36,6 +38,8 @@ func Export_ToFee_Service() (int, bool, string, []models.Pg_ToExportFee) {
 	if error_update != nil {
 		return 500, true, "Error en al intentar actualizar los datos, detalles:" + error_update.Error(), data_to_export
 	}
+
+	time.Sleep(1 * time.Second)
 
 	return 200, false, "", data_to_export
 }

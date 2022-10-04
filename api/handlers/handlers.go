@@ -15,6 +15,7 @@ import (
 	"github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	export "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/export"
 	export_file "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/exportfile"
+	notification "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/notification"
 	stadistic "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/services/stadistic"
 )
 
@@ -43,6 +44,8 @@ func Manejadores() {
 	router_stadistic.GET("/anfitrion/comensales/:limit/:offset", stadistic.StadisticRouter_pg.Get_AnfitrionStadistic_Comensales)
 	router_stadistic.GET("/anfitrion/element/:idelement", stadistic.StadisticRouter_pg.Get_ElementStadistic_ByDay)
 	router_stadistic.GET("/anfitrion/sendtoemail", export_file.ExportfileRouter_pg.ExportFile_Pedido)
+	router_stadistic.GET("/anfitrion/notification", notification.NotificationRouter_pg.Notify_Stadistic)
+	router_stadistic.GET("/anfitrion/ordersfee", export.ExportRouter_pg.Export_ToFee)
 
 	//Abrimos el puerto
 	PORT := os.Getenv("PORT")

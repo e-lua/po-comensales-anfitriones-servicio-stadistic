@@ -261,3 +261,16 @@ type Pg_Export_ByElement struct {
 	TotalAmount float32 `json:"totalamount"`
 	TotalCost   float32 `json:"totalcost"`
 }
+
+type Pg_ToNotify struct {
+	IDBusiness int     `json:"idbusiness"`
+	Orders     int     `json:"orders"`
+	Incoming   float64 `json:"incoming"`
+	Utility    float64 `json:"utility"`
+}
+
+type Pg_ToExportFee struct {
+	IDBusiness int     `json:"idbusiness"`
+	Orders     int     `json:"orders"`
+	Amount     float64 `json:"amount"`
+}

@@ -16,7 +16,7 @@ func Pg_Update_ExportedFee() error {
 
 	db := models.Conectar_Pg_DB()
 
-	query := `UPDATE ordermade SET isexportedtofee=false WHERE ismadebycomensal=true `
+	query := `UPDATE ordermade SET isexportedtofee=true WHERE ismadebycomensal=true`
 	if _, err := db.Exec(ctx, query); err != nil {
 		return err
 	}

@@ -15,7 +15,7 @@ func Pg_Stadistic_OrdersByElements(input_idelement int) ([]interface{}, error) {
 	defer cancel()
 
 	db := models.Conectar_Pg_DB()
-	q := "select json_build_object(extract(isodow FROM (om.schedule->>'daterequired')::timestamp),COUNT(idelement)) from orderdetails AS od JOIN ordermade AS om ON od.idorder=om.idorder where od.idelement=$1 GROUP BY om.schedule->>'daterequired'"
+	q := "SELECT json_build_object(EXTRACT(isodow FROM (dateregistered)::timestamp),COUNT(idelement)) FROM orderdetail WHERE idelement=$1 GROUP BY dateregistered"
 	rows, error_shown := db.Query(ctx, q, input_idelement)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness

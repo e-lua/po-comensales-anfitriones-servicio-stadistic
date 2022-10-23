@@ -46,7 +46,7 @@ func (sr *stadisticRouter_pg) Import_OrderMade(order_tocopy []models.Pg_Order_To
 	//Enviamos los datos importados a registrar
 	error_order_tocopy := Import_OrderMade_Service(order_tocopy)
 	if error_order_tocopy != nil {
-		log.Fatal(error_order_tocopy)
+		log.Println(error_order_tocopy)
 	}
 }
 

@@ -25,7 +25,7 @@ func Pg_Export_OrdersByElements() ([]models.Pg_Export_ByElement, []int64, int, e
 	quantity := 0
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT (od.quantity*od.unitprice)-od.discount,od.quantity*od.costo,od.idorder,od.idelement, COUNT(od.idelement),CONCAT(om.schedule->>'daterequired',' ',om.schedule->>'starttime') FROM orderdetails AS od JOIN ordermade AS om ON od.idorder=om.idorder WHERE om.isexportedtoinventory=false GROUP BY od.idorder,od.costo,od.idelement,od.quantity,od.unitprice,od.discount,CONCAT(om.schedule->>'daterequired',' ',om.schedule->>'starttime')"
+	q := "SELECT totalsales,totalcost,idorder,idelement, COUNT(idelement),CONCAT(dateregistered,' ',hour) FROM orderdetail WHERE isexportedtoinventory=false GROUP BY totalsales,totalcost,idorder,idelement,CONCAT(dateregistered,' ',hour)"
 	rows, error_shown := db.Query(ctx, q)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness

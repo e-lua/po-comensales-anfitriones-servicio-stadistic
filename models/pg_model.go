@@ -25,10 +25,11 @@ type Pg_Schedule struct {
 }
 
 type Pg_Information_Business struct {
-	IDBusiness      int    `json:"idbusiness"`
-	Name            string `json:"name"`
-	Legalidentity   string `json:"legalidentity"`
-	Typesuscription int    `json:"typesuscription"`
+	IDBusiness      int     `json:"idbusiness"`
+	Name            string  `json:"name"`
+	Legalidentity   string  `json:"legalidentity"`
+	Typesuscription int     `json:"typesuscription"`
+	Fee             float64 `json:"fee"`
 }
 
 type Pg_Address_Business struct {
@@ -268,16 +269,17 @@ type Pg_Export_ByElement struct {
 }
 
 type Pg_ToNotify struct {
-	IDBusiness int     `json:"idbusiness"`
-	Orders     int     `json:"orders"`
-	Incoming   float64 `json:"incoming"`
-	Utility    float64 `json:"utility"`
+	IDBusiness    int     `json:"idbusiness"`
+	Orders        int     `json:"orders"`
+	GrossIncoming float64 `json:"grossincoming"`
+	NetIncoming   float64 `json:"netincoming"`
+	NetUtility    float64 `json:"netutility"`
 }
 
 type Pg_ToExportFee struct {
-	IDBusiness int     `json:"idbusiness"`
-	Orders     int     `json:"orders"`
-	Amount     float64 `json:"amount"`
+	IDBusiness  int     `json:"idbusiness"`
+	TotalOrders int     `json:"totalorders"`
+	TotalAmount float64 `json:"totalamount"`
 }
 
 type Pg_Movement struct {

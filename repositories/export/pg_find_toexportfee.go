@@ -17,7 +17,7 @@ func Pg_Find_ToExportFee() ([]models.Pg_ToExportFee, error) {
 	var stadistic_tonotify_all []models.Pg_ToExportFee
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT om.informationbusiness->'idbusiness',COUNT(om.idorder),SUM(od.unitprice*od.quantity) FROM ordermade AS om JOIN orderdetails AS od ON om.idorder=od.idorder WHERE isexportedtofee=false AND ismadebycomensal=true GROUP BY om.informationbusiness->'idbusiness'"
+	q := "SELECT (informationbusiness->'idbusiness')::int,COUNT(idorder),SUM(totalsales) FROM ordermade WHERE isexportedtofee=false AND ismadebycomensal=true GROUP BY informationbusiness->'idbusiness'"
 	rows, error_shown := db.Query(ctx, q)
 
 	if error_shown != nil {
@@ -27,7 +27,7 @@ func Pg_Find_ToExportFee() ([]models.Pg_ToExportFee, error) {
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		var stadistic_toexportfee models.Pg_ToExportFee
-		rows.Scan(&stadistic_toexportfee.IDBusiness, &stadistic_toexportfee.Orders, &stadistic_toexportfee.Amount)
+		rows.Scan(&stadistic_toexportfee.IDBusiness, &stadistic_toexportfee.TotalOrders, &stadistic_toexportfee.TotalAmount)
 
 		stadistic_tonotify_all = append(stadistic_tonotify_all, stadistic_toexportfee)
 	}

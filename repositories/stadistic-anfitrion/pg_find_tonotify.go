@@ -17,7 +17,7 @@ func Pg_Find_ToNotify(date string) ([]models.Pg_ToNotify, error) {
 	var stadistic_tonotify_all []models.Pg_ToNotify
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT (om.informationbusiness->'idbusiness')::bigint,COUNT(om.idorder),SUM(od.unitprice*od.quantity),SUM((od.unitprice*od.quantity)-(od.costo*od.quantity)) FROM ordermade AS om JOIN orderdetails AS od ON om.idorder=od.idorder WHERE om.dateregistered::date=$1::date GROUP BY om.informationbusiness->'idbusiness'"
+	q := "SELECT (informationbusiness->'idbusiness')::bigint,COUNT(idorder),SUM(totalsales),SUM(totalsales-totaliva-totalfee),SUM(totalsales-totaliva-totalfee-totalcost) FROM ordermade WHERE dateregistered::date=$1::date GROUP BY informationbusiness->'idbusiness'"
 	rows, error_shown := db.Query(ctx, q, date)
 
 	if error_shown != nil {
@@ -27,7 +27,7 @@ func Pg_Find_ToNotify(date string) ([]models.Pg_ToNotify, error) {
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		var stadistic_tonotify models.Pg_ToNotify
-		rows.Scan(&stadistic_tonotify.IDBusiness, &stadistic_tonotify.Orders, &stadistic_tonotify.Incoming, &stadistic_tonotify.Utility)
+		rows.Scan(&stadistic_tonotify.IDBusiness, &stadistic_tonotify.Orders, &stadistic_tonotify.GrossIncoming, &stadistic_tonotify.NetIncoming, &stadistic_tonotify.NetUtility)
 
 		stadistic_tonotify_all = append(stadistic_tonotify_all, stadistic_tonotify)
 	}

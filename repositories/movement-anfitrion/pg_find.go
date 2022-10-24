@@ -15,7 +15,7 @@ func Pg_Find(idbusiness int, limit int, datestart string, datefinish string) ([]
 	defer cancel()
 
 	db := models.Conectar_Pg_DB()
-	q := "SELECT dateregistered,description,amount,type,timezone FROM ordermade WHERE idbusiness=$1 AND dateregistered::date BETWEEN $2::date AND $3::date ORDER BY dateregistered ASC LIMIT $4"
+	q := "SELECT idmovement,dateregistered,description,amount,type,timezone FROM ordermade WHERE idbusiness=$1 AND dateregistered::date BETWEEN $2::date AND $3::date ORDER BY dateregistered ASC LIMIT $4"
 	rows, error_shown := db.Query(ctx, q, idbusiness, datestart, datefinish, limit)
 
 	//Instanciamos una variable del modelo Pg_TypeFoodXBusiness
@@ -31,7 +31,7 @@ func Pg_Find(idbusiness int, limit int, datestart string, datefinish string) ([]
 	//Scaneamos l resultado y lo asignamos a la variable instanciada
 	for rows.Next() {
 		var oMovement models.Pg_Movement
-		rows.Scan(&oMovement.Dateregistered, &oMovement.Description, &oMovement.Amount, &oMovement.Type, &oMovement.Timezone)
+		rows.Scan(&oMovement.IdMovement, &oMovement.Dateregistered, &oMovement.Description, &oMovement.Amount, &oMovement.Type, &oMovement.Timezone)
 		oListMovements = append(oListMovements, oMovement)
 		counter += 1
 	}

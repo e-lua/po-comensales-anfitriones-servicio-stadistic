@@ -44,6 +44,11 @@ func (mv *movement_pg) AddMovement(c echo.Context) error {
 		return c.JSON(400, results)
 	}
 
+	if movement.Type < 0 || movement.Type > 1 {
+		results := Response{Error: boolerror, DataError: "000" + "Token incorrecto", Data: ""}
+		return c.JSON(400, results)
+	}
+
 	//Enviamos los datos al servicio
 	status, boolerror, dataerror, data := AddMovement_Service(data_idbusiness, movement)
 	results := Response{Error: boolerror, DataError: dataerror, Data: data}

@@ -16,6 +16,10 @@ func AddMovement_Service(idbusiness int, movement models.Pg_Movement) (int, bool
 	timezone_int, _ := strconv.Atoi(movement.Timezone)
 	movement.Dateregistered = movement.Dateregistered.Add(time.Hour * time.Duration(timezone_int))
 
+	if movement.Type == 1 {
+		movement.Amount = movement.Amount * -1
+	}
+
 	//Enviamos los datos a la BD
 	error_add := movement_anfitrion_repository.Pg_Add(idbusiness, movement)
 	if error_add != nil {

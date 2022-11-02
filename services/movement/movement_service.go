@@ -4,11 +4,17 @@ import (
 
 	//REPOSITORIES
 
+	"strconv"
+	"time"
+
 	models "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/models"
 	movement_anfitrion_repository "github.com/Aphofisis/po-comensales-anfitriones-servicio-stadistic/repositories/movement-anfitrion"
 )
 
 func AddMovement_Service(idbusiness int, movement models.Pg_Movement) (int, bool, string, string) {
+
+	timezone_int, _ := strconv.Atoi(movement.Timezone)
+	movement.Dateregistered = movement.Dateregistered.Add(time.Hour * time.Duration(timezone_int))
 
 	//Enviamos los datos a la BD
 	error_add := movement_anfitrion_repository.Pg_Add(idbusiness, movement)
